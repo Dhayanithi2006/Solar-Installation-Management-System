@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- ================================================================== -->
+        <!-- Scenario 5: Reference Breakdown Ticket (Arun Kumar 18-Month Inverter)-->
+        <!-- ================================================================== -->
+        <record id="ticket_arun_kumar_rainy_breakdown" model="solar.service.ticket">
+            <field name="name">TCK/2026/00001</field>
+            <field name="partner_id" ref="partner_arun_kumar"/>
+            <field name="lot_id" ref="lot_inverter_demo_001"/>
+            <field name="product_id" ref="product_solar_inverter_3kw"/>
+            <field name="warranty_id" ref="warranty_inverter_arun_kumar_active"/>
+            <field name="fault_category">inverter_fault</field>
+            <field name="reported_error_code">ERR-F04 (Grid Synchronization Fault)</field>
+            <field name="issue_description">During continuous monsoon rains, rooftop generation halted. Inverter front panel is flashing red fault LED with code ERR-F04. Unit was delivered 18 months ago under 2-year warranty.</field>
+            <field name="technician_id" ref="base.user_admin"/>
+            <field name="state">new</field>
+        </record>
+
+        <!-- ================================================================== -->
+        <!-- Scenario 5: Out-of-Warranty Ticket (Battery 26 Months In)          -->
+        <!-- ================================================================== -->
+        <record id="ticket_expired_battery_claim" model="solar.service.ticket">
+            <field name="name">TCK/2026/00002</field>
+            <field name="partner_id" ref="partner_arun_kumar"/>
+            <field name="lot_id" ref="lot_battery_demo_001"/>
+            <field name="product_id" ref="product_solar_battery_150ah"/>
+            <field name="warranty_id" ref="warranty_battery_expired"/>
+            <field name="fault_category">battery_drain</field>
+            <field name="reported_error_code">B-LOW (Deep Discharge)</field>
+            <field name="issue_description">Off-grid battery bank fails to hold charge beyond 30 minutes. Equipment delivered 26 months ago (warranty expired 2 months ago). Chargeable repair required.</field>
+            <field name="state">new</field>
+        </record>
+    </data>
+</odoo>
+

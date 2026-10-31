@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- ================================================================== -->
+    <!-- Product Template Form View Extension                               -->
+    <!-- ================================================================== -->
+    <record id="product_template_solar_form_view" model="ir.ui.view">
+        <field name="name">product.template.solar.form.inherit</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_form_view"/>
+        <field name="arch" type="xml">
+            <!-- Add Solar Tab or Group in General Information -->
+            <xpath expr="//page[@name='general_information']" position="after">
+                <page name="solar_details" string="Solar Specifications" invisible="not is_solar_component and not is_storable">
+                    <group>
+                        <group name="solar_core" string="Solar Classification">
+                            <field name="is_solar_component"/>
+                            <field name="solar_component_type" invisible="not is_solar_component" required="is_solar_component"/>
+                            <field name="solar_capacity_watts" invisible="solar_component_type not in ('panel', 'inverter', 'battery')"/>
+                        </group>
+                        <group name="solar_compliance" string="Warranty &amp; Dispatch Compliance">
+                            <field name="is_serial_required" readonly="1"/>
+                            <field name="default_warranty_rule_id" invisible="not is_solar_component"/>
+                        </group>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- ================================================================== -->
+    <!-- Product Template Search View Extension                             -->
+    <!-- ================================================================== -->
+    <record id="product_template_solar_search_view" model="ir.ui.view">
+        <field name="name">product.template.solar.search.inherit</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_search_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//filter[@name='filter_to_sell']" position="after">
+                <separator/>
+                <filter string="Solar Components" name="filter_solar_components" domain="[('is_solar_component', '=', True)]"/>
+                <filter string="Serial-Tracked Equipment" name="filter_serial_tracked" domain="[('is_serial_required', '=', True)]"/>
+            </xpath>
+            <xpath expr="//group" position="inside">
+                <filter string="Solar Component Type" name="groupby_solar_type" domain="[]" context="{'group_by': 'solar_component_type'}"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- ================================================================== -->
+    <!-- Action & Menu for Solar Products                                   -->
+    <!-- ================================================================== -->
+    <record id="action_solar_products" model="ir.actions.act_window">
+        <field name="name">Solar Catalogue</field>
+        <field name="res_model">product.template</field>
+        <field name="view_mode">kanban,list,form</field>
+        <field name="domain">[('is_solar_component', '=', True)]</field>
+        <field name="context">{'default_is_solar_component': True}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Manage Solar Hardware, Panels, Inverters &amp; Batteries
+            </p>
+        </field>
+    </record>
+
+    <!-- Add Solar Catalogue to Configuration Menu -->
+    <menuitem id="menu_solar_product_catalogue"
+              name="Solar Catalogue"
+              parent="menu_solar_config"
+              action="action_solar_products"
+              sequence="5"/>
+</odoo>
+

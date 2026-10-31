@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- ================================================================== -->
+    <!-- Repair Order Form View Extension for Solar Warranty Billing         -->
+    <!-- ================================================================== -->
+    <record id="view_repair_order_form_inherit_solar" model="ir.ui.view">
+        <field name="name">repair.order.form.solar</field>
+        <field name="model">repair.order</field>
+        <field name="inherit_id" ref="repair.view_repair_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//sheet" position="before">
+                <div class="alert alert-success d-flex align-items-center mb-0" role="alert" invisible="not is_covered_repair">
+                    <i class="fa fa-shield me-2" style="font-size: 1.5rem;"/>
+                    <div>
+                        <strong>Scenario 5 Active Warranty:</strong> This repair is covered at ₹0 cost under active warranty certificate. All replacement components and diagnostics are provided free of charge to the customer.
+                    </div>
+                </div>
+            </xpath>
+            <xpath expr="//field[@name='lot_id']" position="after">
+                <field name="is_solar_repair" invisible="1"/>
+                <field name="is_covered_repair" invisible="1"/>
+                <field name="ticket_id" options="{'no_create': True}" invisible="not is_solar_repair"/>
+                <field name="warranty_id" options="{'no_create': True}" invisible="not is_solar_repair"/>
+                <field name="warranty_coverage_status"
+                       widget="badge"
+                       decoration-success="warranty_coverage_status == 'covered'"
+                       decoration-danger="warranty_coverage_status == 'out_of_warranty'"
+                       invisible="not is_solar_repair"/>
+            </xpath>
+            <xpath expr="//notebook" position="inside">
+                <page string="Solar Warranty Decision &amp; Audit (Scenario 5)" name="solar_warranty_audit" invisible="not is_solar_repair">
+                    <group>
+                        <field name="warranty_notes" readonly="1"/>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- ================================================================== -->
+    <!-- Repair Order Search View Extension                                 -->
+    <!-- ================================================================== -->
+    <record id="view_repair_order_filter_inherit_solar" model="ir.ui.view">
+        <field name="name">repair.order.search.solar</field>
+        <field name="model">repair.order</field>
+        <field name="inherit_id" ref="repair.view_repair_order_filter"/>
+        <field name="arch" type="xml">
+            <xpath expr="//filter[@name='my_repairs']" position="after">
+                <separator/>
+                <filter string="Solar Repairs"
+                        name="filter_solar_repairs"
+                        domain="[('is_solar_repair', '=', True)]"/>
+                <filter string="Under Warranty (₹0 Covered)"
+                        name="filter_covered_repairs"
+                        domain="[('warranty_coverage_status', '=', 'covered')]"/>
+                <filter string="Chargeable Repairs"
+                        name="filter_chargeable_repairs"
+                        domain="[('warranty_coverage_status', 'in', ['out_of_warranty', 'void'])]"/>
+            </xpath>
+            <xpath expr="//group" position="inside">
+                <filter string="Warranty Decision"
+                        name="group_by_warranty_status"
+                        context="{'group_by': 'warranty_coverage_status'}"/>
+                <filter string="Source Ticket"
+                        name="group_by_ticket"
+                        context="{'group_by': 'ticket_id'}"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>
+

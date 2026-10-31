@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- ================================================================== -->
+        <!-- Scenario 3: Serial Numbers (INV-DEMO-001, BAT-DEMO-001, CC-DEMO-001)-->
+        <!-- ================================================================== -->
+        <!-- 1. Serialized 3 kW Inverter -->
+        <record id="lot_inverter_demo_001" model="stock.lot">
+            <field name="name">INV-DEMO-001</field>
+            <field name="product_id" ref="product_solar_inverter_3kw"/>
+            <field name="company_id" ref="base.main_company"/>
+        </record>
+
+        <!-- 2. Serialized 150Ah Battery -->
+        <record id="lot_battery_demo_001" model="stock.lot">
+            <field name="name">BAT-DEMO-001</field>
+            <field name="product_id" ref="product_solar_battery_150ah"/>
+            <field name="company_id" ref="base.main_company"/>
+        </record>
+
+        <!-- 3. Serialized MPPT Charge Controller -->
+        <record id="lot_controller_demo_001" model="stock.lot">
+            <field name="name">CC-DEMO-001</field>
+            <field name="product_id" ref="product_solar_charge_controller_mppt"/>
+            <field name="company_id" ref="base.main_company"/>
+        </record>
+    </data>
+</odoo>
+

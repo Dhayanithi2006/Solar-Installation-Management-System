@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- ================================================================== -->
+        <!-- Scenario 5: Reference ₹0 Warranty Repair (Arun Kumar 3 kW Inverter) -->
+        <!-- ================================================================== -->
+        <record id="repair_order_arun_kumar_inverter" model="repair.order">
+            <field name="partner_id" ref="partner_arun_kumar"/>
+            <field name="product_id" ref="product_solar_inverter_3kw"/>
+            <field name="lot_id" ref="lot_inverter_demo_001"/>
+            <field name="ticket_id" ref="ticket_arun_kumar_rainy_breakdown"/>
+            <field name="warranty_id" ref="warranty_inverter_arun_kumar_active"/>
+            <field name="warranty_coverage_status">covered</field>
+            <field name="warranty_notes">₹0 WARRANTY COVERED REPAIR (Scenario 5): Replaced grid synchronization module and reset error ERR-F04 at zero charge under 2-year warranty.</field>
+            <field name="description">Rainy-season grid tripping repair for Arun Kumar (INV-DEMO-001).</field>
+        </record>
+    </data>
+</odoo>
+

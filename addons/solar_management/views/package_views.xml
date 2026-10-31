@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- ================================================================== -->
+    <!-- Solar Package List View                                            -->
+    <!-- ================================================================== -->
+    <record id="view_solar_package_list" model="ir.ui.view">
+        <field name="name">solar.package.list</field>
+        <field name="model">solar.package</field>
+        <field name="arch" type="xml">
+            <list string="Solar Packages">
+                <field name="name"/>
+                <field name="system_type"/>
+                <field name="capacity_kw"/>
+                <field name="panel_count"/>
+                <field name="battery_included"/>
+                <field name="list_price" widget="monetary"/>
+                <field name="standard_price" widget="monetary" string="Material Cost"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- ================================================================== -->
+    <!-- Solar Package Form View                                            -->
+    <!-- ================================================================== -->
+    <record id="view_solar_package_form" model="ir.ui.view">
+        <field name="name">solar.package.form</field>
+        <field name="model">solar.package</field>
+        <field name="arch" type="xml">
+            <form string="Solar Package Specification">
+                <sheet>
+                    <div class="oe_title">
+                        <label for="name" string="Package Title"/>
+                        <h1>
+                            <field name="name" placeholder="e.g. 3 kW On-Grid System"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group name="specs" string="System Characteristics">
+                            <field name="system_type"/>
+                            <field name="capacity_kw"/>
+                            <field name="battery_included"/>
+                            <field name="panel_count"/>
+                        </group>
+                        <group name="financials" string="Pricing &amp; Costing">
+                            <field name="product_tmpl_id"/>
+                            <field name="bom_id"/>
+                            <field name="list_price" widget="monetary"/>
+                            <field name="standard_price" widget="monetary"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page name="bom_details" string="Kit Components (BoM)">
+                            <field name="bom_id" readonly="1">
+                                <list>
+                                    <field name="product_tmpl_id" string="Kit Product"/>
+                                    <field name="type" string="BoM Type"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- ================================================================== -->
+    <!-- Solar Package Search View                                          -->
+    <!-- ================================================================== -->
+    <record id="view_solar_package_search" model="ir.ui.view">
+        <field name="name">solar.package.search</field>
+        <field name="model">solar.package</field>
+        <field name="arch" type="xml">
+            <search string="Search Solar Packages">
+                <field name="name"/>
+                <field name="system_type"/>
+                <field name="capacity_kw"/>
+                <separator/>
+                <filter string="On-Grid Systems" name="filter_on_grid" domain="[('system_type', '=', 'on_grid')]"/>
+                <filter string="Off-Grid Systems" name="filter_off_grid" domain="[('system_type', '=', 'off_grid')]"/>
+                <group expand="0" string="Group By">
+                    <filter string="System Type" name="group_system_type" context="{'group_by': 'system_type'}"/>
+                    <filter string="Capacity" name="group_capacity" context="{'group_by': 'capacity_kw'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- ================================================================== -->
+    <!-- Window Action & Menus                                              -->
+    <!-- ================================================================== -->
+    <record id="action_solar_packages" model="ir.actions.act_window">
+        <field name="name">Solar Packages &amp; BoMs</field>
+        <field name="res_model">solar.package</field>
+        <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Configure Standard 1 kW to 5 kW Solar Packages
+            </p>
+            <p>
+                Define pre-engineered Bills of Materials for On-Grid and Off-Grid configurations.
+            </p>
+        </field>
+    </record>
+
+    <menuitem id="menu_solar_packages_config"
+              name="Solar Packages"
+              parent="menu_solar_config"
+              action="action_solar_packages"
+              sequence="2"/>
+</odoo>
+

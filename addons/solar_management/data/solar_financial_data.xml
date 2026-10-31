@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- ================================================================== -->
+        <!-- Project Direct Service Suppliers                                   -->
+        <!-- ================================================================== -->
+        <record id="supplier_speedfast_logistics" model="res.partner">
+            <field name="name">SpeedFast Solar Logistics &amp; Transport</field>
+            <field name="supplier_rank">1</field>
+            <field name="is_company">True</field>
+            <field name="street">NH 44 Transport Nagar</field>
+            <field name="city">Hyderabad</field>
+            <field name="email">dispatch@speedfastlogistics.example.com</field>
+        </record>
+
+        <record id="supplier_ceig_inspection" model="res.partner">
+            <field name="name">Deccan Electrical Safety &amp; Inspection Agency</field>
+            <field name="supplier_rank">1</field>
+            <field name="is_company">True</field>
+            <field name="street">CEIG Plaza, Lakdi-ka-pul</field>
+            <field name="city">Hyderabad</field>
+            <field name="email">inspections@deccansafety.example.com</field>
+        </record>
+
+        <record id="supplier_tsredco_liaison" model="res.partner">
+            <field name="name">Telangana DISCOM Net-Metering Liaison Services</field>
+            <field name="supplier_rank">1</field>
+            <field name="is_company">True</field>
+            <field name="street">Power Towers, Mint Compound</field>
+            <field name="city">Hyderabad</field>
+            <field name="email">netmetering@tsredco-liaison.example.com</field>
+        </record>
+
+        <!-- ================================================================== -->
+        <!-- Scenario 6 / DEC-007: Reference Customer Invoice (Arun Kumar 3 kW) -->
+        <!-- ================================================================== -->
+        <record id="invoice_arun_kumar_3kw" model="account.move">
+            <field name="partner_id" ref="partner_arun_kumar"/>
+            <field name="move_type">out_invoice</field>
+            <field name="installation_id" ref="installation_arun_kumar_3kw"/>
+            <field name="solar_sale_order_id" ref="sale_order_arun_kumar_3kw"/>
+            <field name="invoice_date">2026-10-16</field>
+            <field name="invoice_line_ids" eval="[
+                (0, 0, {
+                    'product_id': ref('pkg_product_on_grid_3kw'),
+                    'quantity': 1.0,
+                    'price_unit': 189000.0,
+                    'name': '3 kW On-Grid Solar Package Rooftop Installation and Commissioning',
+                })
+            ]"/>
+        </record>
+
+        <!-- ================================================================== -->
+        <!-- DEC-007 Attributable Direct Project Expenses (Vendor Bills)        -->
+        <!-- ================================================================== -->
+        <!-- 1. Freight & Logistics Transport Bill -->
+        <record id="bill_freight_arun_kumar_3kw" model="account.move">
+            <field name="partner_id" ref="supplier_speedfast_logistics"/>
+            <field name="move_type">in_invoice</field>
+            <field name="installation_id" ref="installation_arun_kumar_3kw"/>
+            <field name="solar_expense_type">freight</field>
+            <field name="invoice_date">2026-10-14</field>
+            <field name="invoice_line_ids" eval="[
+                (0, 0, {
+                    'quantity': 1.0,
+                    'price_unit': 3500.0,
+                    'name': 'Flatbed Transport &amp; Safe Rooftop Delivery of 6x 540W Solar Panels &amp; Mounting Frames',
+                })
+            ]"/>
+        </record>
+
+        <!-- 2. Electrical Safety & CEIG Inspection Bill -->
+        <record id="bill_inspection_arun_kumar_3kw" model="account.move">
+            <field name="partner_id" ref="supplier_ceig_inspection"/>
+            <field name="move_type">in_invoice</field>
+            <field name="installation_id" ref="installation_arun_kumar_3kw"/>
+            <field name="solar_expense_type">inspection</field>
+            <field name="invoice_date">2026-10-16</field>
+            <field name="invoice_line_ids" eval="[
+                (0, 0, {
+                    'quantity': 1.0,
+                    'price_unit': 2500.0,
+                    'name': 'Statutory CEIG Electrical Safety Certification and Earth Resistance Testing (1.2 Ohm Confirmed)',
+                })
+            ]"/>
+        </record>
+
+        <!-- 3. Net-Metering & DISCOM Grid Interconnection Permit Bill -->
+        <record id="bill_permit_arun_kumar_3kw" model="account.move">
+            <field name="partner_id" ref="supplier_tsredco_liaison"/>
+            <field name="move_type">in_invoice</field>
+            <field name="installation_id" ref="installation_arun_kumar_3kw"/>
+            <field name="solar_expense_type">permit</field>
+            <field name="invoice_date">2026-10-16</field>
+            <field name="invoice_line_ids" eval="[
+                (0, 0, {
+                    'quantity': 1.0,
+                    'price_unit': 4000.0,
+                    'name': 'DISCOM Bi-Directional Net-Meter Feasibility Approval and Grid Synchronization Application Fee',
+                })
+            ]"/>
+        </record>
+    </data>
+</odoo>
+

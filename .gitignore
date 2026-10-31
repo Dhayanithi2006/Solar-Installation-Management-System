@@ -1,0 +1,62 @@
+# ==============================================================================
+# SunPower Solutions — Solar Installation Management System (.gitignore)
+# ==============================================================================
+
+# Python Byte-compiled / optimized / DLL files
+__pycache__/
+*.pyc
+*.pyo
+*.py[cod]
+*$py.class
+*.pyd
+
+# Virtual Environments
+venv/
+.venv/
+env/
+ENV/
+env.bak/
+venv.bak/
+
+# Odoo Runtime Files, Data Volumes & Filestores
+*.log
+*.pid
+odoo.log
+filestore/
+sessions/
+.odoo/
+odoo-web-data/
+odoo-db-data/
+pgdata/
+
+# Database Dumps and Exports
+*.dump
+*.sql
+*.tar
+*.tar.gz
+
+# Secrets, Environment Overrides & Private Credentials
+.env
+.env.*
+!.env.example
+*.secret
+*.pem
+*.key
+*.cert
+pgpass.conf
+
+# Operating System Generated Files
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+.DS_Store
+
+# Editor and IDE Artifacts
+*.swp
+*.swo
+*~
+.idea/
+.vscode/
+*.sublime-project
+*.sublime-workspace

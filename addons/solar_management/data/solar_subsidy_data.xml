@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- ================================================================== -->
+        <!-- Statutory Required Document Types for PM Surya Ghar CFA Subsidy     -->
+        <!-- ================================================================== -->
+        <record id="doc_type_aadhaar" model="solar.subsidy.document.type">
+            <field name="name">Applicant Aadhaar Card / Government Photo ID</field>
+            <field name="code">ID_AADHAAR</field>
+            <field name="sequence">10</field>
+            <field name="is_mandatory" eval="True"/>
+            <field name="description">Clear copy of applicant Aadhaar card matching the electricity bill name.</field>
+        </record>
+
+        <record id="doc_type_electricity_bill" model="solar.subsidy.document.type">
+            <field name="name">Latest Electricity Distribution Bill (Discom SC No)</field>
+            <field name="code">ELEC_BILL</field>
+            <field name="sequence">20</field>
+            <field name="is_mandatory" eval="True"/>
+            <field name="description">Electricity bill for the installation site issued within the last 2 months.</field>
+        </record>
+
+        <record id="doc_type_roof_ownership" model="solar.subsidy.document.type">
+            <field name="name">Rooftop / Property Ownership Document</field>
+            <field name="code">ROOF_PROOF</field>
+            <field name="sequence">30</field>
+            <field name="is_mandatory" eval="True"/>
+            <field name="description">Municipal property tax receipt, title deed, or registered lease deed.</field>
+        </record>
+
+        <record id="doc_type_bank_passbook" model="solar.subsidy.document.type">
+            <field name="name">Bank Passbook / Cancelled Cheque (DBT Direct Credit)</field>
+            <field name="code">BANK_CHEQUE</field>
+            <field name="sequence">40</field>
+            <field name="is_mandatory" eval="True"/>
+            <field name="description">Applicant bank account passbook copy showing IFSC code for DBT subsidy payout.</field>
+        </record>
+
+        <record id="doc_type_commissioning_cert" model="solar.subsidy.document.type">
+            <field name="name">Solar Rooftop Commissioning Certificate (Joint Inspection)</field>
+            <field name="code">COMM_CERT</field>
+            <field name="sequence">50</field>
+            <field name="is_mandatory" eval="True"/>
+            <field name="description">Joint inspection certificate signed by installer technician and customer.</field>
+        </record>
+
+        <record id="doc_type_net_meter_test" model="solar.subsidy.document.type">
+            <field name="name">Bi-Directional Net-Meter Synchronization Letter</field>
+            <field name="code">METER_REPORT</field>
+            <field name="sequence">60</field>
+            <field name="is_mandatory" eval="True"/>
+            <field name="description">Official Discom test report confirming grid synchronization and meter installation.</field>
+        </record>
+
+        <!-- ================================================================== -->
+        <!-- Reference Subsidy Case (Arun Kumar 3 kW On-Grid)                   -->
+        <!-- ================================================================== -->
+        <record id="subsidy_case_arun_kumar_3kw" model="solar.subsidy.case">
+            <field name="partner_id" ref="partner_arun_kumar"/>
+            <field name="sale_order_id" ref="sale_order_arun_kumar_3kw"/>
+            <field name="scheme_name">PM Surya Ghar: Muft Bijli Yojana</field>
+            <field name="application_number">PMSGY/2026/TS/889211</field>
+            <field name="discom_name">tsspdcl</field>
+            <field name="consumer_number">1002348892</field>
+            <field name="solar_capacity_kw">3.0</field>
+            <field name="eligible_subsidy_amount">78000.0</field>
+            <field name="sanctioned_amount">78000.0</field>
+            <field name="state">submitted</field>
+            <field name="document_ids" eval="[
+                (0, 0, {
+                    'document_type_id': ref('doc_type_aadhaar'),
+                    'state': 'verified',
+                    'notes': 'Verified against customer Aadhaar and electricity bill name.',
+                }),
+                (0, 0, {
+                    'document_type_id': ref('doc_type_electricity_bill'),
+                    'state': 'verified',
+                    'notes': 'TSSPDCL Consumer SC No 1002348892 active and paid.',
+                }),
+                (0, 0, {
+                    'document_type_id': ref('doc_type_roof_ownership'),
+                    'state': 'verified',
+                    'notes': 'GHMC Property Tax Receipt 2025-26 verified.',
+                }),
+                (0, 0, {
+                    'document_type_id': ref('doc_type_bank_passbook'),
+                    'state': 'verified',
+                    'notes': 'HDFC Bank Account validated for DBT payout.',
+                }),
+                (0, 0, {
+                    'document_type_id': ref('doc_type_commissioning_cert'),
+                    'state': 'verified',
+                    'notes': '3 kW Rooftop commissioning signed with generation evidence.',
+                }),
+                (0, 0, {
+                    'document_type_id': ref('doc_type_net_meter_test'),
+                    'state': 'verified',
+                    'notes': 'TSSPDCL Net-Meter installed and synchronised.',
+                })
+            ]"/>
+        </record>
+    </data>
+</odoo>
+

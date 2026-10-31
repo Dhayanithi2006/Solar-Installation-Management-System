@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- ================================================================== -->
+        <!-- Scenario 5: Reference Active Warranty (18 Months In — Arun Kumar)   -->
+        <!-- ================================================================== -->
+        <record id="warranty_inverter_arun_kumar_active" model="solar.warranty.record">
+            <field name="name">WAR/2025/00001</field>
+            <field name="lot_id" ref="lot_inverter_demo_001"/>
+            <field name="product_id" ref="product_solar_inverter_3kw"/>
+            <field name="partner_id" ref="partner_arun_kumar"/>
+            <field name="rule_id" ref="warranty_rule_solar_inverter_2y"/>
+            <field name="warranty_start" eval="(DateTime.today() - relativedelta(months=18)).strftime('%Y-%m-%d')"/>
+            <field name="warranty_end" eval="(DateTime.today() + relativedelta(months=6)).strftime('%Y-%m-%d')"/>
+            <field name="state">active</field>
+        </record>
+
+        <!-- ================================================================== -->
+        <!-- Scenario 5: Expired Warranty (26 Months In — Chargeable Repair)     -->
+        <!-- ================================================================== -->
+        <record id="warranty_battery_expired" model="solar.warranty.record">
+            <field name="name">WAR/2024/00002</field>
+            <field name="lot_id" ref="lot_battery_demo_001"/>
+            <field name="product_id" ref="product_solar_battery_150ah"/>
+            <field name="partner_id" ref="partner_arun_kumar"/>
+            <field name="rule_id" ref="warranty_rule_solar_battery_2y"/>
+            <field name="warranty_start" eval="(DateTime.today() - relativedelta(months=26)).strftime('%Y-%m-%d')"/>
+            <field name="warranty_end" eval="(DateTime.today() - relativedelta(months=2)).strftime('%Y-%m-%d')"/>
+            <field name="state">expired</field>
+        </record>
+    </data>
+</odoo>
+

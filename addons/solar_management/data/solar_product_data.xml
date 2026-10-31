@@ -1,0 +1,269 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- ============================================================== -->
+        <!-- Product Categories                                             -->
+        <!-- ============================================================== -->
+        <record id="categ_solar_root" model="product.category">
+            <field name="name">Solar Hardware &amp; Systems</field>
+        </record>
+
+        <record id="categ_solar_panels" model="product.category">
+            <field name="name">Solar PV Panels</field>
+            <field name="parent_id" ref="categ_solar_root"/>
+        </record>
+
+        <record id="categ_solar_inverters" model="product.category">
+            <field name="name">Solar Inverters</field>
+            <field name="parent_id" ref="categ_solar_root"/>
+        </record>
+
+        <record id="categ_solar_batteries" model="product.category">
+            <field name="name">Energy Storage Batteries</field>
+            <field name="parent_id" ref="categ_solar_root"/>
+        </record>
+
+        <record id="categ_solar_controllers" model="product.category">
+            <field name="name">Charge Controllers</field>
+            <field name="parent_id" ref="categ_solar_root"/>
+        </record>
+
+        <record id="categ_solar_balance_of_system" model="product.category">
+            <field name="name">Mounting &amp; Electrical BoS</field>
+            <field name="parent_id" ref="categ_solar_root"/>
+        </record>
+
+        <record id="categ_solar_packages" model="product.category">
+            <field name="name">Solar Turnkey Packages</field>
+            <field name="parent_id" ref="categ_solar_root"/>
+        </record>
+
+        <record id="categ_solar_services" model="product.category">
+            <field name="name">Solar Services</field>
+            <field name="parent_id" ref="categ_solar_root"/>
+        </record>
+
+        <!-- ============================================================== -->
+        <!-- Sample Suppliers                                               -->
+        <!-- ============================================================== -->
+        <record id="supplier_apex_inverters" model="res.partner">
+            <field name="name">Apex Inverter Technologies Pvt Ltd</field>
+            <field name="supplier_rank">1</field>
+            <field name="is_company">True</field>
+            <field name="street">Plot 45, Electronics City</field>
+            <field name="city">Hyderabad</field>
+            <field name="email">sales@apexinverters.example.com</field>
+        </record>
+
+        <record id="supplier_sunvolt_batteries" model="res.partner">
+            <field name="name">SunVolt Energy Storage Ltd</field>
+            <field name="supplier_rank">1</field>
+            <field name="is_company">True</field>
+            <field name="street">Industrial Area Phase 2</field>
+            <field name="city">Hyderabad</field>
+            <field name="email">orders@sunvolt.example.com</field>
+        </record>
+
+        <record id="supplier_evergreen_panels" model="res.partner">
+            <field name="name">EverGreen Solar Panels India</field>
+            <field name="supplier_rank">1</field>
+            <field name="is_company">True</field>
+            <field name="street">Solar Park Phase 1</field>
+            <field name="city">Chennai</field>
+            <field name="email">supply@evergreensolar.example.com</field>
+        </record>
+
+        <!-- ============================================================== -->
+        <!-- 1. Solar Panels (Hardware, 540W Mono PERC)                     -->
+        <!-- ============================================================== -->
+        <record id="product_solar_panel_540w" model="product.product">
+            <field name="name">Solar Panel 540W Mono PERC Half-Cut</field>
+            <field name="categ_id" ref="categ_solar_panels"/>
+            <field name="list_price">14000.00</field>
+            <field name="standard_price">10500.00</field>
+            <field name="type">consu</field>
+            <field name="is_storable" eval="True"/>
+            <field name="tracking">lot</field>
+            <field name="is_solar_component" eval="True"/>
+            <field name="solar_component_type">panel</field>
+            <field name="solar_capacity_watts">540.0</field>
+            <field name="default_warranty_rule_id" ref="warranty_rule_solar_panel_20y"/>
+            <field name="description_sale">High-efficiency 540W Monocrystalline PERC solar photovoltaic panel for rooftop generation.</field>
+        </record>
+
+        <!-- ============================================================== -->
+        <!-- 2. Solar Inverters (Serial-Tracked: 1 kW, 3 kW, 5 kW)          -->
+        <!-- ============================================================== -->
+        <record id="product_solar_inverter_1kw" model="product.product">
+            <field name="name">Solar Inverter 1 kW Single Phase On-Grid</field>
+            <field name="categ_id" ref="categ_solar_inverters"/>
+            <field name="list_price">22000.00</field>
+            <field name="standard_price">16500.00</field>
+            <field name="type">consu</field>
+            <field name="is_storable" eval="True"/>
+            <field name="tracking">serial</field>
+            <field name="is_solar_component" eval="True"/>
+            <field name="solar_component_type">inverter</field>
+            <field name="solar_capacity_watts">1000.0</field>
+            <field name="default_warranty_rule_id" ref="warranty_rule_solar_inverter_2y"/>
+            <field name="description_sale">1 kW High-efficiency grid-tied solar inverter with dual MPPT tracker.</field>
+        </record>
+
+        <record id="product_solar_inverter_3kw" model="product.product">
+            <field name="name">Solar Inverter 3 kW Single Phase On-Grid</field>
+            <field name="categ_id" ref="categ_solar_inverters"/>
+            <field name="list_price">42000.00</field>
+            <field name="standard_price">31500.00</field>
+            <field name="type">consu</field>
+            <field name="is_storable" eval="True"/>
+            <field name="tracking">serial</field>
+            <field name="is_solar_component" eval="True"/>
+            <field name="solar_component_type">inverter</field>
+            <field name="solar_capacity_watts">3000.0</field>
+            <field name="default_warranty_rule_id" ref="warranty_rule_solar_inverter_2y"/>
+            <field name="description_sale">3 kW Smart grid-tied solar inverter with digital display, Wi-Fi monitoring, and IP65 rating.</field>
+        </record>
+
+        <record id="product_solar_inverter_5kw" model="product.product">
+            <field name="name">Solar Inverter 5 kW Single/Three Phase On-Grid</field>
+            <field name="categ_id" ref="categ_solar_inverters"/>
+            <field name="list_price">65000.00</field>
+            <field name="standard_price">48000.00</field>
+            <field name="type">consu</field>
+            <field name="is_storable" eval="True"/>
+            <field name="tracking">serial</field>
+            <field name="is_solar_component" eval="True"/>
+            <field name="solar_component_type">inverter</field>
+            <field name="solar_capacity_watts">5000.0</field>
+            <field name="default_warranty_rule_id" ref="warranty_rule_solar_inverter_2y"/>
+            <field name="description_sale">5 kW Commercial and residential On-Grid solar inverter with surge protection.</field>
+        </record>
+
+        <!-- ============================================================== -->
+        <!-- 3. Solar Storage Batteries (Serial-Tracked)                    -->
+        <!-- ============================================================== -->
+        <record id="product_solar_battery_150ah" model="product.product">
+            <field name="name">Solar Battery 150Ah / 48V Deep Cycle</field>
+            <field name="categ_id" ref="categ_solar_batteries"/>
+            <field name="list_price">28000.00</field>
+            <field name="standard_price">21000.00</field>
+            <field name="type">consu</field>
+            <field name="is_storable" eval="True"/>
+            <field name="tracking">serial</field>
+            <field name="is_solar_component" eval="True"/>
+            <field name="solar_component_type">battery</field>
+            <field name="solar_capacity_watts">1800.0</field>
+            <field name="default_warranty_rule_id" ref="warranty_rule_solar_battery_2y"/>
+            <field name="description_sale">Deep cycle heavy-duty solar energy storage battery for Off-Grid rooftop packages.</field>
+        </record>
+
+        <!-- ============================================================== -->
+        <!-- 4. Solar Charge Controllers (Serial-Tracked)                   -->
+        <!-- ============================================================== -->
+        <record id="product_solar_charge_controller_mppt" model="product.product">
+            <field name="name">Solar Battery Charge Controller MPPT 24V/48V 40A</field>
+            <field name="categ_id" ref="categ_solar_controllers"/>
+            <field name="list_price">9500.00</field>
+            <field name="standard_price">6800.00</field>
+            <field name="type">consu</field>
+            <field name="is_storable" eval="True"/>
+            <field name="tracking">serial</field>
+            <field name="is_solar_component" eval="True"/>
+            <field name="solar_component_type">charge_controller</field>
+            <field name="default_warranty_rule_id" ref="warranty_rule_solar_controller_2y"/>
+            <field name="description_sale">High efficiency MPPT charge controller regulating power flow and battery protection.</field>
+        </record>
+
+        <!-- ============================================================== -->
+        <!-- 5. Mounting Structures & Hardware                              -->
+        <!-- ============================================================== -->
+        <record id="product_solar_mounting_structure" model="product.product">
+            <field name="name">Galvanized Metal Rooftop Mounting Stands (Per kW Set)</field>
+            <field name="categ_id" ref="categ_solar_balance_of_system"/>
+            <field name="list_price">4500.00</field>
+            <field name="standard_price">3000.00</field>
+            <field name="type">consu</field>
+            <field name="is_storable" eval="True"/>
+            <field name="tracking">none</field>
+            <field name="is_solar_component" eval="True"/>
+            <field name="solar_component_type">structure</field>
+            <field name="description_sale">Heavy-duty hot-dip galvanized steel mounting rails, clamps, and elevating triangular legs.</field>
+        </record>
+
+        <!-- ============================================================== -->
+        <!-- 6. Wiring Boxes & Safety Earthing                              -->
+        <!-- ============================================================== -->
+        <record id="product_solar_wiring_safety_box" model="product.product">
+            <field name="name">AC/DC Distribution Box with Earthing &amp; Safety Kit</field>
+            <field name="categ_id" ref="categ_solar_balance_of_system"/>
+            <field name="list_price">7500.00</field>
+            <field name="standard_price">5200.00</field>
+            <field name="type">consu</field>
+            <field name="is_storable" eval="True"/>
+            <field name="tracking">none</field>
+            <field name="is_solar_component" eval="True"/>
+            <field name="solar_component_type">safety</field>
+            <field name="description_sale">IP65 sealed weather-proof wiring box with DC SPD, AC MCB, copper earthing electrodes, and lightning arrestor.</field>
+        </record>
+
+        <!-- ============================================================== -->
+        <!-- 7. Electrical Solar DC Cables (Meter UoM)                       -->
+        <!-- ============================================================== -->
+        <record id="product_solar_dc_cable" model="product.product">
+            <field name="name">4 sq mm Double Insulated Solar DC Cable (Meters)</field>
+            <field name="categ_id" ref="categ_solar_balance_of_system"/>
+            <field name="uom_id" ref="uom.product_uom_meter"/>
+            <field name="uom_po_id" ref="uom.product_uom_meter"/>
+            <field name="list_price">95.00</field>
+            <field name="standard_price">65.00</field>
+            <field name="type">consu</field>
+            <field name="is_storable" eval="True"/>
+            <field name="tracking">none</field>
+            <field name="is_solar_component" eval="True"/>
+            <field name="solar_component_type">wiring</field>
+            <field name="description_sale">UV-resistant, halogen-free, double insulated copper solar photovoltaic power cable.</field>
+        </record>
+
+        <!-- ============================================================== -->
+        <!-- 8. Installation & Commissioning Service                        -->
+        <!-- ============================================================== -->
+        <record id="product_solar_installation_service" model="product.product">
+            <field name="name">Rooftop Installation, Fitting &amp; Testing Service</field>
+            <field name="categ_id" ref="categ_solar_services"/>
+            <field name="list_price">15000.00</field>
+            <field name="standard_price">8000.00</field>
+            <field name="type">service</field>
+            <field name="is_solar_component" eval="True"/>
+            <field name="solar_component_type">service</field>
+            <field name="invoice_policy">order</field>
+            <field name="description_sale">Complete physical mechanical mounting, electrical interconnection, grid sync, generation testing, and commissioning.</field>
+        </record>
+
+        <!-- ============================================================== -->
+        <!-- Supplier Price & Purchasing Links                              -->
+        <!-- ============================================================== -->
+        <record id="supplierinfo_inverter_3kw" model="product.supplierinfo">
+            <field name="partner_id" ref="supplier_apex_inverters"/>
+            <field name="product_id" ref="product_solar_inverter_3kw"/>
+            <field name="price">31500.00</field>
+            <field name="delay">3</field>
+            <field name="min_qty">1.0</field>
+        </record>
+
+        <record id="supplierinfo_battery_150ah" model="product.supplierinfo">
+            <field name="partner_id" ref="supplier_sunvolt_batteries"/>
+            <field name="product_id" ref="product_solar_battery_150ah"/>
+            <field name="price">21000.00</field>
+            <field name="delay">2</field>
+            <field name="min_qty">1.0</field>
+        </record>
+
+        <record id="supplierinfo_panel_540w" model="product.supplierinfo">
+            <field name="partner_id" ref="supplier_evergreen_panels"/>
+            <field name="product_id" ref="product_solar_panel_540w"/>
+            <field name="price">10500.00</field>
+            <field name="delay">4</field>
+            <field name="min_qty">6.0</field>
+        </record>
+    </data>
+</odoo>

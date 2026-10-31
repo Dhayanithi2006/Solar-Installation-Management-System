@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- ================================================================== -->
+    <!-- Purchase Order Form View Extension                                 -->
+    <!-- ================================================================== -->
+    <record id="purchase_order_form_inherit_solar" model="ir.ui.view">
+        <field name="name">purchase.order.form.solar</field>
+        <field name="model">purchase.order</field>
+        <field name="inherit_id" ref="purchase.purchase_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='partner_ref']" position="after">
+                <field name="is_solar_purchase" invisible="1"/>
+                <field name="procurement_type" widget="radio" options="{'horizontal': true}"/>
+                <field name="component_category"/>
+            </xpath>
+            <xpath expr="//page[@name='purchase_delivery_invoice']" position="inside">
+                <group string="Solar Project Attributable Procurement" invisible="not is_solar_purchase">
+                    <group>
+                        <field name="sale_order_id"/>
+                        <field name="installation_id"/>
+                    </group>
+                    <group>
+                        <field name="total_landed_cost_estimated"/>
+                    </group>
+                </group>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- ================================================================== -->
+    <!-- Purchase Order Search View Extension                               -->
+    <!-- ================================================================== -->
+    <record id="view_purchase_order_filter_inherit_solar" model="ir.ui.view">
+        <field name="name">purchase.order.search.solar</field>
+        <field name="model">purchase.order</field>
+        <field name="inherit_id" ref="purchase.view_purchase_order_filter"/>
+        <field name="arch" type="xml">
+            <xpath expr="//filter[@name='my_purchases']" position="after">
+                <separator/>
+                <filter string="Solar Purchases"
+                        name="filter_solar_purchases"
+                        domain="[('is_solar_purchase', '=', True)]"/>
+                <filter string="Stock Replenishment"
+                        name="filter_stock_procurement"
+                        domain="[('procurement_type', '=', 'stock')]"/>
+                <filter string="Project-Specific Hardware"
+                        name="filter_project_procurement"
+                        domain="[('procurement_type', '=', 'project')]"/>
+            </xpath>
+            <xpath expr="//group" position="inside">
+                <filter string="Procurement Purpose"
+                        name="group_by_procurement_type"
+                        context="{'group_by': 'procurement_type'}"/>
+                <filter string="Component Category"
+                        name="group_by_component_category"
+                        context="{'group_by': 'component_category'}"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- ================================================================== -->
+    <!-- Window Action: Solar Hardware Procurement                          -->
+    <!-- ================================================================== -->
+    <record id="action_solar_procurement" model="ir.actions.act_window">
+        <field name="name">Solar Procurement Orders</field>
+        <field name="res_model">purchase.order</field>
+        <field name="view_mode">list,form,pivot,graph</field>
+        <field name="domain">[('is_solar_purchase', '=', True)]</field>
+        <field name="context">{'default_is_solar_purchase': True, 'default_procurement_type': 'stock'}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create a new Solar Procurement Purchase Order
+            </p>
+            <p>
+                Manage stock replenishment and project-specific procurement for PV panels, inverters, batteries, and balance of systems.
+            </p>
+        </field>
+    </record>
+
+    <!-- ================================================================== -->
+    <!-- Menu Item under Solar Operations                                   -->
+    <!-- ================================================================== -->
+    <menuitem id="menu_solar_procurement"
+              name="Hardware Procurement"
+              parent="menu_solar_operations"
+              action="action_solar_procurement"
+              sequence="25"/>
+</odoo>
+

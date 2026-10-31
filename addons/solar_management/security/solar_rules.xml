@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- ============================================================== -->
+        <!-- Multi-Company Record Rules                                     -->
+        <!-- ============================================================== -->
+        <record id="solar_survey_company_rule" model="ir.rule">
+            <field name="name">Solar Site Survey Multi-Company</field>
+            <field name="model_id" ref="model_solar_site_survey"/>
+            <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'in', company_ids)]</field>
+        </record>
+
+        <record id="solar_installation_company_rule" model="ir.rule">
+            <field name="name">Solar Installation Multi-Company</field>
+            <field name="model_id" ref="model_solar_installation"/>
+            <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'in', company_ids)]</field>
+        </record>
+
+        <record id="solar_warranty_record_company_rule" model="ir.rule">
+            <field name="name">Solar Warranty Record Multi-Company</field>
+            <field name="model_id" ref="model_solar_warranty_record"/>
+            <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'in', company_ids)]</field>
+        </record>
+
+        <record id="solar_service_ticket_company_rule" model="ir.rule">
+            <field name="name">Solar Service Ticket Multi-Company</field>
+            <field name="model_id" ref="model_solar_service_ticket"/>
+            <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'in', company_ids)]</field>
+        </record>
+
+        <record id="solar_subsidy_case_company_rule" model="ir.rule">
+            <field name="name">Solar Subsidy Case Multi-Company</field>
+            <field name="model_id" ref="model_solar_subsidy_case"/>
+            <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'in', company_ids)]</field>
+        </record>
+
+        <record id="solar_passport_company_rule" model="ir.rule">
+            <field name="name">Digital Solar Passport Multi-Company</field>
+            <field name="model_id" ref="model_solar_passport"/>
+            <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'in', company_ids)]</field>
+        </record>
+
+        <!-- ============================================================== -->
+        <!-- Role-Based Access Rules                                        -->
+        <!-- ============================================================== -->
+        <!-- Survey Technician: Assigned Surveys Only -->
+        <record id="solar_survey_technician_rule" model="ir.rule">
+            <field name="name">Survey Technician: Assigned Surveys</field>
+            <field name="model_id" ref="model_solar_site_survey"/>
+            <field name="groups" eval="[(4, ref('group_solar_survey_tech'))]"/>
+            <field name="domain_force">['|', ('technician_id', '=', user.id), ('technician_id', '=', False)]</field>
+        </record>
+
+        <!-- Survey Manager: All Surveys -->
+        <record id="solar_survey_manager_rule" model="ir.rule">
+            <field name="name">Survey Manager: All Surveys</field>
+            <field name="model_id" ref="model_solar_site_survey"/>
+            <field name="groups" eval="[(4, ref('group_solar_survey_manager'))]"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+        </record>
+
+        <!-- Installation Crew: Assigned Installations Only -->
+        <record id="solar_installation_crew_rule" model="ir.rule">
+            <field name="name">Installation Crew: Assigned Installations</field>
+            <field name="model_id" ref="model_solar_installation"/>
+            <field name="groups" eval="[(4, ref('group_solar_installer'))]"/>
+            <field name="domain_force">['|', '|', ('lead_technician_id', '=', user.id), ('technician_ids', 'in', [user.id]), ('technician_ids', '=', False)]</field>
+        </record>
+
+        <!-- Service Agent / Technician: Assigned Service Tickets -->
+        <record id="solar_service_ticket_technician_rule" model="ir.rule">
+            <field name="name">Service Agent: Assigned Tickets</field>
+            <field name="model_id" ref="model_solar_service_ticket"/>
+            <field name="groups" eval="[(4, ref('group_solar_service'))]"/>
+            <field name="domain_force">['|', ('technician_id', '=', user.id), ('technician_id', '=', False)]</field>
+        </record>
+
+        <!-- Administrator: All Installations -->
+        <record id="solar_installation_admin_rule" model="ir.rule">
+            <field name="name">Solar Administrator: All Installations</field>
+            <field name="model_id" ref="model_solar_installation"/>
+            <field name="groups" eval="[(4, ref('group_solar_manager'))]"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+        </record>
+    </data>
+</odoo>
+

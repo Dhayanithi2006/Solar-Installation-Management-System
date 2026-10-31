@@ -1,0 +1,344 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "SunPower Solutions \u2014 Solar ERP REST API",
+    "description": "Secure Odoo 18 Community Edition REST/JSON API for React + TypeScript Frontend Integration",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:8069",
+      "description": "Local Odoo Development Server"
+    },
+    {
+      "url": "https://solar-installation-management-system.odoo.com",
+      "description": "Production Odoo Server"
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "cookieAuth": {
+        "type": "apiKey",
+        "in": "cookie",
+        "name": "session_id"
+      }
+    }
+  },
+  "security": [
+    {
+      "cookieAuth": []
+    }
+  ],
+  "paths": {
+    "/api/solar/v1/auth/login": {
+      "post": {
+        "summary": "Authenticate user and establish session",
+        "security": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "login": {
+                    "type": "string"
+                  },
+                  "password": {
+                    "type": "string"
+                  },
+                  "db": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "login",
+                  "password"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Login successful"
+          },
+          "400": {
+            "description": "Missing credentials"
+          },
+          "401": {
+            "description": "Invalid credentials"
+          }
+        }
+      }
+    },
+    "/api/solar/v1/auth/session": {
+      "get": {
+        "summary": "Inspect active session metadata and user roles",
+        "responses": {
+          "200": {
+            "description": "Active session metadata"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/api/solar/v1/dashboard/kpis": {
+      "get": {
+        "summary": "Executive KPI aggregates and DEC-007 financial metrics",
+        "responses": {
+          "200": {
+            "description": "Aggregated KPI numbers"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/api/solar/v1/crm/leads": {
+      "get": {
+        "summary": "List solar rooftop leads",
+        "responses": {
+          "200": {
+            "description": "List of leads"
+          }
+        }
+      },
+      "post": {
+        "summary": "Create new rooftop enquiry lead",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "contact_name": {
+                    "type": "string"
+                  },
+                  "phone": {
+                    "type": "string"
+                  },
+                  "email": {
+                    "type": "string"
+                  },
+                  "requested_capacity_kw": {
+                    "type": "number"
+                  },
+                  "requested_system_type": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "contact_name",
+                  "phone",
+                  "requested_capacity_kw"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Lead created"
+          },
+          "400": {
+            "description": "Validation error"
+          }
+        }
+      }
+    },
+    "/api/solar/v1/surveys/{survey_id}/approve": {
+      "post": {
+        "summary": "Approve site survey (Survey Manager role gate)",
+        "parameters": [
+          {
+            "name": "survey_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Survey approved"
+          },
+          "403": {
+            "description": "Forbidden - requires survey manager role"
+          },
+          "404": {
+            "description": "Survey not found"
+          }
+        }
+      }
+    },
+    "/api/solar/v1/orders/{order_id}/record-advance": {
+      "post": {
+        "summary": "Record 20% customer advance payment (Scenario 2)",
+        "parameters": [
+          {
+            "name": "order_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Advance recorded and order work-ready"
+          }
+        }
+      }
+    },
+    "/api/solar/v1/serials/lookup/{serial_no}": {
+      "get": {
+        "summary": "Instant serial lookup and warranty status check",
+        "parameters": [
+          {
+            "name": "serial_no",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Serial details and active warranty status"
+          },
+          "404": {
+            "description": "Serial not found"
+          }
+        }
+      }
+    },
+    "/api/solar/v1/installations/{inst_id}/submit-worksheet": {
+      "post": {
+        "summary": "Submit mobile installation worksheet, photos and touch signature",
+        "parameters": [
+          {
+            "name": "inst_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Installation completed and verified"
+          },
+          "400": {
+            "description": "Validation error (missing power test or signature)"
+          }
+        }
+      }
+    },
+    "/api/solar/v1/inventory/dispatches/{picking_id}/validate": {
+      "post": {
+        "summary": "Validate warehouse dispatch transfer with advance payment check (Scenario 3)",
+        "parameters": [
+          {
+            "name": "picking_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Dispatch validated successfully"
+          },
+          "400": {
+            "description": "Dispatch blocked - advance payment or serial scan pending"
+          },
+          "403": {
+            "description": "Forbidden - requires warehouse or manager role"
+          }
+        }
+      }
+    },
+    "/api/solar/v1/passports": {
+      "get": {
+        "summary": "List Digital Solar Passports",
+        "description": "Retrieve all commissioned Digital Solar Passports with filtering and counts.",
+        "tags": [
+          "Digital Solar Passport"
+        ],
+        "responses": {
+          "200": {
+            "description": "List of passports returned successfully"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/api/solar/v1/passports/{passport_id}": {
+      "get": {
+        "summary": "Get Digital Solar Passport Detail",
+        "description": "Retrieve complete Digital Solar Passport lifecycle record, component registry, and warranty timeline.",
+        "tags": [
+          "Digital Solar Passport"
+        ],
+        "parameters": [
+          {
+            "name": "passport_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Passport details returned successfully"
+          },
+          "404": {
+            "description": "Passport not found"
+          }
+        }
+      }
+    },
+    "/api/solar/v1/passports/by-serial/{serial_no}": {
+      "get": {
+        "summary": "Lookup Passport by Component Serial Number",
+        "description": "Instantly retrieve full Digital Solar Passport by scanning or searching any component barcode/serial.",
+        "tags": [
+          "Digital Solar Passport"
+        ],
+        "parameters": [
+          {
+            "name": "serial_no",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Passport found and returned"
+          },
+          "404": {
+            "description": "No passport found for given serial"
+          }
+        }
+      }
+    }
+  }
+}

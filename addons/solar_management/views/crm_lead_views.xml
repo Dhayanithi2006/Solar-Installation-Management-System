@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- ================================================================== -->
+    <!-- CRM Lead Form View Extension for Rooftop Solar                     -->
+    <!-- ================================================================== -->
+    <record id="crm_lead_view_form_inherit_solar" model="ir.ui.view">
+        <field name="name">crm.lead.form.solar</field>
+        <field name="model">crm.lead</field>
+        <field name="inherit_id" ref="crm.crm_lead_view_form"/>
+        <field name="arch" type="xml">
+            <!-- Header Action Button: Request Site Survey -->
+            <xpath expr="//header" position="inside">
+                <button name="action_create_site_survey"
+                        type="object"
+                        string="Request Site Survey"
+                        class="btn-primary"
+                        invisible="survey_status == 'approved'"/>
+            </xpath>
+
+            <!-- Smart Button for Site Surveys -->
+            <xpath expr="//div[@name='button_box']" position="inside">
+                <button name="action_view_surveys"
+                        type="object"
+                        class="oe_stat_button"
+                        icon="fa-sun-o">
+                    <field name="survey_count" widget="statinfo" string="Site Surveys"/>
+                </button>
+            </xpath>
+
+            <!-- Solar Assessment Tab in Notebook -->
+            <xpath expr="//notebook" position="inside">
+                <page string="Solar Assessment" name="solar_assessment">
+                    <group>
+                        <group string="Desired Solar System">
+                            <field name="requested_capacity_kw"/>
+                            <field name="requested_system_type"/>
+                            <field name="monthly_electricity_bill"/>
+                            <field name="subsidy_interest"/>
+                        </group>
+                        <group string="Site Feasibility &amp; Survey">
+                            <field name="shadow_free_roof_area"/>
+                            <field name="grid_suitability"/>
+                            <field name="survey_status"
+                                   widget="badge"
+                                   decoration-info="survey_status == 'draft'"
+                                   decoration-warning="survey_status == 'submitted'"
+                                   decoration-success="survey_status == 'approved'"
+                                   decoration-danger="survey_status == 'rejected'"/>
+                        </group>
+                    </group>
+                    <group string="Roof Space &amp; Site Observations">
+                        <field name="roof_space_notes"
+                               nolabel="1"
+                               placeholder="Describe roof structure (RCC slab, sheet, tiles), shading objects, transformer distance, backup requirements..."/>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- ================================================================== -->
+    <!-- CRM Lead Search / Filter Extension for Solar Queries               -->
+    <!-- ================================================================== -->
+    <record id="crm_lead_view_search_inherit_solar" model="ir.ui.view">
+        <field name="name">crm.lead.search.solar</field>
+        <field name="model">crm.lead</field>
+        <field name="inherit_id" ref="crm.view_crm_case_opportunities_filter"/>
+        <field name="arch" type="xml">
+            <xpath expr="//filter[@name='assigned_to_me']" position="after">
+                <separator/>
+                <filter string="Subsidy Interested"
+                        name="filter_subsidy_interested"
+                        domain="[('subsidy_interest', '=', True)]"/>
+                <filter string="Survey Pending"
+                        name="filter_survey_pending"
+                        domain="[('survey_status', 'in', ['draft', 'submitted'])]"/>
+                <filter string="Survey Approved"
+                        name="filter_survey_approved"
+                        domain="[('survey_status', '=', 'approved')]"/>
+                <filter string="No Survey"
+                        name="filter_no_survey"
+                        domain="[('survey_status', '=', 'no_survey')]"/>
+            </xpath>
+            <xpath expr="//group" position="inside">
+                <filter string="System Type"
+                        name="group_by_system_type"
+                        context="{'group_by': 'requested_system_type'}"/>
+                <filter string="Survey Status"
+                        name="group_by_survey_status"
+                        context="{'group_by': 'survey_status'}"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>
+

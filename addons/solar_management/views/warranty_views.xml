@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- ================================================================== -->
+    <!-- Solar Warranty Rule Views                                          -->
+    <!-- ================================================================== -->
+    <record id="solar_warranty_rule_view_tree" model="ir.ui.view">
+        <field name="name">solar.warranty.rule.list</field>
+        <field name="model">solar.warranty.rule</field>
+        <field name="arch" type="xml">
+            <list string="Warranty Policies">
+                <field name="name"/>
+                <field name="component_type"/>
+                <field name="duration_value"/>
+                <field name="duration_unit"/>
+                <field name="policy_notes"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="solar_warranty_rule_view_form" model="ir.ui.view">
+        <field name="name">solar.warranty.rule.form</field>
+        <field name="model">solar.warranty.rule</field>
+        <field name="arch" type="xml">
+            <form string="Warranty Policy Configuration">
+                <sheet>
+                    <div class="oe_title">
+                        <label for="name" class="oe_edit_only" string="Policy Name"/>
+                        <h1><field name="name" placeholder="e.g. Solar Inverter 2-Year Replacement Policy"/></h1>
+                    </div>
+                    <group>
+                        <group string="Duration &amp; Category">
+                            <field name="component_type"/>
+                            <label for="duration_value" string="Warranty Duration"/>
+                            <div class="o_row">
+                                <field name="duration_value"/>
+                                <field name="duration_unit"/>
+                            </div>
+                        </group>
+                        <group string="Target Hardware">
+                            <field name="product_tmpl_id"/>
+                            <field name="product_id"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                        </group>
+                    </group>
+                    <group string="Policy Coverage Terms &amp; Conditions">
+                        <field name="policy_notes" nolabel="1" placeholder="Specify covered defects, replacement terms, labor coverage, and void exclusions..."/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- ================================================================== -->
+    <!-- Solar Warranty Record Tree / List View                             -->
+    <!-- ================================================================== -->
+    <record id="solar_warranty_record_view_tree" model="ir.ui.view">
+        <field name="name">solar.warranty.record.list</field>
+        <field name="model">solar.warranty.record</field>
+        <field name="arch" type="xml">
+            <list string="Active Product Warranties"
+                  decoration-success="state == 'active'"
+                  decoration-danger="state == 'expired'"
+                  decoration-muted="state == 'void'">
+                <field name="name"/>
+                <field name="lot_id" string="Equipment Serial #"/>
+                <field name="product_id"/>
+                <field name="component_type"/>
+                <field name="partner_id" string="Customer Owner"/>
+                <field name="warranty_start"/>
+                <field name="warranty_end"/>
+                <field name="days_remaining" string="Days Left"/>
+                <field name="state"
+                       widget="badge"
+                       decoration-success="state == 'active'"
+                       decoration-danger="state == 'expired'"
+                       decoration-muted="state == 'void'"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- ================================================================== -->
+    <!-- Solar Warranty Record Form View                                    -->
+    <!-- ================================================================== -->
+    <record id="solar_warranty_record_view_form" model="ir.ui.view">
+        <field name="name">solar.warranty.record.form</field>
+        <field name="model">solar.warranty.record</field>
+        <field name="arch" type="xml">
+            <form string="Warranty Certificate">
+                <header>
+                    <button name="action_create_service_ticket"
+                            type="object"
+                            string="Log Service Claim"
+                            class="btn-primary"
+                            invisible="state != 'active'"/>
+                    <button name="action_void_warranty"
+                            type="object"
+                            string="Void Warranty"
+                            class="btn-secondary"
+                            invisible="state == 'void'"/>
+                    <button name="action_reactivate_warranty"
+                            type="object"
+                            string="Re-Activate Warranty"
+                            class="btn-secondary"
+                            invisible="state != 'void'"/>
+                    <field name="state" widget="statusbar" statusbar_visible="active,expired"/>
+                </header>
+                <sheet>
+                    <widget name="web_ribbon" title="Active Warranty" bg_color="text-bg-success" invisible="state != 'active'"/>
+                    <widget name="web_ribbon" title="Expired" bg_color="text-bg-danger" invisible="state != 'expired'"/>
+                    <widget name="web_ribbon" title="Void" bg_color="text-bg-secondary" invisible="state != 'void'"/>
+
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_service_tickets"
+                                type="object"
+                                class="oe_stat_button"
+                                icon="fa-wrench">
+                            <field name="ticket_count" widget="statinfo" string="Claims"/>
+                        </button>
+                    </div>
+
+                    <div class="oe_title">
+                        <label for="name" class="oe_edit_only" string="Certificate Reference"/>
+                        <h1><field name="name" readonly="1"/></h1>
+                        <label for="lot_id" class="oe_edit_only" string="Equipment Serial Number"/>
+                        <h2><field name="lot_id" options="{'no_create': True}"/></h2>
+                    </div>
+
+                    <group>
+                        <group string="Equipment &amp; Customer Deployment">
+                            <field name="product_id" options="{'no_create': True}"/>
+                            <field name="component_type"/>
+                            <field name="partner_id" options="{'no_create': True}"/>
+                            <field name="installation_id" options="{'no_create': True}"/>
+                            <field name="picking_id" options="{'no_create': True}"/>
+                            <field name="sale_order_id" options="{'no_create': True}"/>
+                        </group>
+                        <group string="Policy &amp; Validity Timeline (Scenario 5)">
+                            <field name="rule_id" options="{'no_create': True}"/>
+                            <field name="warranty_start"/>
+                            <field name="warranty_end"/>
+                            <field name="days_remaining" readonly="1"/>
+                            <field name="is_valid" widget="boolean_toggle" readonly="1"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                        </group>
+                    </group>
+
+                    <notebook>
+                        <page string="Service &amp; Repair History" name="service_history">
+                            <field name="service_ticket_ids" readonly="1">
+                                <list string="Service Tickets">
+                                    <field name="name"/>
+                                    <field name="partner_id"/>
+                                    <field name="technician_id"/>
+                                    <field name="state" widget="badge"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <!-- ================================================================== -->
+    <!-- Solar Warranty Record Pivot View (Analytics)                       -->
+    <!-- ================================================================== -->
+    <record id="solar_warranty_record_view_pivot" model="ir.ui.view">
+        <field name="name">solar.warranty.record.pivot</field>
+        <field name="model">solar.warranty.record</field>
+        <field name="arch" type="xml">
+            <pivot string="Warranty Analytics" sample="1">
+                <field name="component_type" type="row"/>
+                <field name="state" type="col"/>
+            </pivot>
+        </field>
+    </record>
+
+    <!-- ================================================================== -->
+    <!-- Solar Warranty Record Search View                                  -->
+    <!-- ================================================================== -->
+    <record id="solar_warranty_record_view_search" model="ir.ui.view">
+        <field name="name">solar.warranty.record.search</field>
+        <field name="model">solar.warranty.record</field>
+        <field name="arch" type="xml">
+            <search string="Search Warranty Records">
+                <field name="name" string="Certificate Reference"/>
+                <field name="lot_id" string="Serial Number"/>
+                <field name="product_id" string="Equipment"/>
+                <field name="partner_id" string="Customer"/>
+                <separator/>
+                <filter string="Active (Under Warranty)" name="filter_active" domain="[('state', '=', 'active')]"/>
+                <filter string="Expired Warranties" name="filter_expired" domain="[('state', '=', 'expired')]"/>
+                <filter string="Void / Cancelled" name="filter_void" domain="[('state', '=', 'void')]"/>
+                <separator/>
+                <filter string="Inverters" name="filter_inverters" domain="[('component_type', '=', 'inverter')]"/>
+                <filter string="Batteries" name="filter_batteries" domain="[('component_type', '=', 'battery')]"/>
+                <filter string="Panels" name="filter_panels" domain="[('component_type', '=', 'panel')]"/>
+                <filter string="Charge Controllers" name="filter_controllers" domain="[('component_type', '=', 'charge_controller')]"/>
+                <group expand="0" string="Group By">
+                    <filter string="Status" name="group_by_state" context="{'group_by': 'state'}"/>
+                    <filter string="Component Category" name="group_by_component" context="{'group_by': 'component_type'}"/>
+                    <filter string="Customer Owner" name="group_by_customer" context="{'group_by': 'partner_id'}"/>
+                    <filter string="Applied Policy" name="group_by_rule" context="{'group_by': 'rule_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+</odoo>
+

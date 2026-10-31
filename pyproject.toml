@@ -1,0 +1,13 @@
+[tool.pytest.ini_options]
+testpaths = ["mcp-server/tests"]
+python_files = ["test_*.py"]
+
+[tool.mypy]
+python_version = "3.13"
+ignore_missing_imports = true
+check_untyped_defs = true
+
+[tool.ruff]
+target-version = "py313"
+line-length = 120
+lint.ignore = ["E501"]

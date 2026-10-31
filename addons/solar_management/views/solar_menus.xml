@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- ================================================================== -->
+    <!-- Window Actions                                                     -->
+    <!-- ================================================================== -->
+    <record id="action_solar_site_survey" model="ir.actions.act_window">
+        <field name="name">Site Surveys</field>
+        <field name="res_model">solar.site.survey</field>
+        <field name="view_mode">list,form,kanban,activity</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create a new Rooftop Site Survey
+            </p>
+            <p>
+                Capture roof space, tilt, orientation, cable distance, and photo evidence before issuing quotations.
+            </p>
+        </field>
+    </record>
+
+    <record id="action_solar_installation" model="ir.actions.act_window">
+        <field name="name">Installation Jobs</field>
+        <field name="res_model">solar.installation</field>
+        <field name="view_mode">list,kanban,form,calendar,pivot,graph,activity</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Schedule a new Solar Installation Job
+            </p>
+            <p>
+                Assign technician crews, log timestamps, power test generation, and capture customer acceptance signatures.
+            </p>
+        </field>
+    </record>
+
+    <record id="action_solar_warranty_record" model="ir.actions.act_window">
+        <field name="name">Warranty Records</field>
+        <field name="res_model">solar.warranty.record</field>
+        <field name="view_mode">list,form,pivot</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Active Product Warranties
+            </p>
+            <p>
+                Warranties automatically activate on delivery completion for serialized inverters, batteries, charge controllers, and panels.
+            </p>
+        </field>
+    </record>
+
+    <record id="action_solar_warranty_rule" model="ir.actions.act_window">
+        <field name="name">Warranty Policies</field>
+        <field name="res_model">solar.warranty.rule</field>
+        <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Configure Product Warranty Duration Rules
+            </p>
+        </field>
+    </record>
+
+    <record id="action_solar_service_ticket" model="ir.actions.act_window">
+        <field name="name">Service &amp; Repair Tickets</field>
+        <field name="res_model">solar.service.ticket</field>
+        <field name="view_mode">list,form,kanban,activity</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Log a Customer Service Claim
+            </p>
+            <p>
+                Instant lookup of customer and equipment serial number, automated warranty validation, and repair billing gates.
+            </p>
+        </field>
+    </record>
+
+    <record id="action_solar_subsidy_case" model="ir.actions.act_window">
+        <field name="name">Subsidy Cases (PM Surya Ghar)</field>
+        <field name="res_model">solar.subsidy.case</field>
+        <field name="view_mode">list,kanban,form,pivot,graph</field>
+        <field name="search_view_id" ref="solar_subsidy_case_view_search"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Manage Government Subsidy Applications
+            </p>
+            <p>
+                Track national rooftop portal filing, statutory document verification checklist, joint site inspection, and Direct Benefit Transfer (DBT) disbursements.
+            </p>
+        </field>
+    </record>
+
+    <!-- Reporting Actions (Scenario 6 Director Analytics / SOL-MGT-01 to SOL-MGT-06) -->
+    <record id="action_solar_profitability_report" model="ir.actions.act_window">
+        <field name="name">Installation Profitability (DEC-007)</field>
+        <field name="res_model">solar.installation</field>
+        <field name="view_mode">pivot,graph,list,form</field>
+        <field name="search_view_id" ref="solar_installation_view_search"/>
+        <field name="context">{
+            'search_default_filter_profitable': 1,
+        }</field>
+    </record>
+
+    <record id="action_solar_technician_performance_report" model="ir.actions.act_window">
+        <field name="name">Technician Labor &amp; Performance</field>
+        <field name="res_model">solar.installation</field>
+        <field name="view_mode">pivot,graph,list</field>
+        <field name="search_view_id" ref="solar_installation_view_search"/>
+        <field name="context">{
+            'pivot_row_groupby': ['lead_technician_id'],
+            'pivot_measures': ['duration_hours', 'cost_technician_labor', 'installed_capacity_kw'],
+        }</field>
+    </record>
+
+    <record id="action_solar_subsidy_report" model="ir.actions.act_window">
+        <field name="name">Subsidy Pipeline &amp; DBT Analytics</field>
+        <field name="res_model">solar.subsidy.case</field>
+        <field name="view_mode">pivot,graph,list,form</field>
+        <field name="search_view_id" ref="solar_subsidy_case_view_search"/>
+    </record>
+
+    <record id="action_solar_service_report" model="ir.actions.act_window">
+        <field name="name">Service Claims &amp; Repairs Analysis</field>
+        <field name="res_model">solar.service.ticket</field>
+        <field name="view_mode">pivot,graph,list,form</field>
+        <field name="search_view_id" ref="solar_service_ticket_view_search"/>
+    </record>
+
+    <!-- ================================================================== -->
+    <!-- Menu Hierarchy                                                     -->
+    <!-- ================================================================== -->
+    <!-- Top-Level Root Application Menu -->
+    <menuitem id="menu_solar_root"
+              name="Solar Operations"
+              web_icon="solar_management,static/description/icon.png"
+              sequence="20"/>
+
+    <!-- Operations Menu Category -->
+    <menuitem id="menu_solar_operations"
+              name="Operations"
+              parent="menu_solar_root"
+              sequence="10"/>
+
+    <menuitem id="menu_solar_surveys"
+              name="Site Surveys"
+              parent="menu_solar_operations"
+              action="action_solar_site_survey"
+              sequence="10"/>
+
+    <menuitem id="menu_solar_installations"
+              name="Installations"
+              parent="menu_solar_operations"
+              action="action_solar_installation"
+              sequence="20"/>
+
+    <menuitem id="menu_solar_passports"
+              name="Digital Solar Passports"
+              parent="menu_solar_operations"
+              action="action_solar_passport"
+              sequence="25"/>
+
+    <menuitem id="menu_solar_subsidies"
+              name="Subsidy Tracking"
+              parent="menu_solar_operations"
+              action="action_solar_subsidy_case"
+              sequence="30"/>
+
+    <!-- After-Sales & Warranty Category -->
+    <menuitem id="menu_solar_after_sales"
+              name="After-Sales &amp; Warranty"
+              parent="menu_solar_root"
+              sequence="20"/>
+
+    <menuitem id="menu_solar_service_tickets"
+              name="Service Tickets"
+              parent="menu_solar_after_sales"
+              action="action_solar_service_ticket"
+              sequence="10"/>
+
+    <menuitem id="menu_solar_warranty_records"
+              name="Warranty Records"
+              parent="menu_solar_after_sales"
+              action="action_solar_warranty_record"
+              sequence="20"/>
+
+    <!-- Finance & Costing Category (DEC-007 / Scenario 6) -->
+    <menuitem id="menu_solar_finance"
+              name="Finance &amp; Costing"
+              parent="menu_solar_root"
+              sequence="25"/>
+
+    <menuitem id="menu_solar_customer_invoices"
+              name="Customer Invoices"
+              parent="menu_solar_finance"
+              action="action_solar_customer_invoices"
+              sequence="10"/>
+
+    <menuitem id="menu_solar_project_expenses"
+              name="Attributable Direct Expenses"
+              parent="menu_solar_finance"
+              action="action_solar_project_expenses"
+              sequence="20"/>
+
+    <menuitem id="menu_solar_installations_costing"
+              name="Installation Profitability"
+              parent="menu_solar_finance"
+              action="action_solar_installation"
+              sequence="30"/>
+
+    <!-- Reporting Category (Scenario 6 Director Overview) -->
+    <menuitem id="menu_solar_reports"
+              name="Reporting"
+              parent="menu_solar_root"
+              sequence="30"/>
+
+    <menuitem id="menu_solar_report_profitability"
+              name="Installation Profitability"
+              parent="menu_solar_reports"
+              action="action_solar_profitability_report"
+              sequence="10"/>
+
+    <menuitem id="menu_solar_report_technicians"
+              name="Technician Performance"
+              parent="menu_solar_reports"
+              action="action_solar_technician_performance_report"
+              sequence="20"/>
+
+    <menuitem id="menu_solar_report_subsidies"
+              name="Subsidy Pipeline (DBT)"
+              parent="menu_solar_reports"
+              action="action_solar_subsidy_report"
+              sequence="30"/>
+
+    <menuitem id="menu_solar_report_service"
+              name="Service Claims &amp; Repairs"
+              parent="menu_solar_reports"
+              action="action_solar_service_report"
+              sequence="40"/>
+
+    <!-- Configuration Category -->
+    <menuitem id="menu_solar_config"
+              name="Configuration"
+              parent="menu_solar_root"
+              sequence="40"
+              groups="group_solar_manager"/>
+
+    <menuitem id="menu_solar_warranty_rules"
+              name="Warranty Policies"
+              parent="menu_solar_config"
+              action="action_solar_warranty_rule"
+              sequence="10"/>
+</odoo>

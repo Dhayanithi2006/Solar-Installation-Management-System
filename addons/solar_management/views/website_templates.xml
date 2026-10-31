@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- ================================================================== -->
+    <!-- Public Solar Enquiry Web Form Template                             -->
+    <!-- ================================================================== -->
+    <template id="solar_enquiry_form_template" name="Solar Rooftop Enquiry Form">
+        <t t-call="website.layout">
+            <div id="wrap" class="oe_structure oe_empty py-5">
+                <div class="container">
+                    <div class="row justify-content-center">
+                        <div class="col-lg-8">
+                            <div class="card shadow-sm border-0">
+                                <div class="card-header bg-success text-white py-3">
+                                    <h3 class="card-title mb-0">SunPower Solutions — Rooftop Solar Enquiry</h3>
+                                    <small class="text-white-50">Tell us about your rooftop and solar requirements for homes &amp; small factories.</small>
+                                </div>
+                                <div class="card-body p-4">
+                                    <form action="/solar/enquiry/submit" method="post" enctype="multipart/form-data">
+                                        <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+
+                                        <h5 class="border-bottom pb-2 mb-3 text-success">1. Contact &amp; Site Details</h5>
+                                        <div class="row g-3 mb-3">
+                                            <div class="col-md-6">
+                                                <label class="form-label" for="name">Full Name <span class="text-danger">*</span></label>
+                                                <input type="text" class="form-control" name="name" id="name" placeholder="e.g. Arun Kumar" required="required"/>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label class="form-label" for="phone">Phone / WhatsApp <span class="text-danger">*</span></label>
+                                                <input type="tel" class="form-control" name="phone" id="phone" placeholder="e.g. 9876543210" required="required"/>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label class="form-label" for="email">Email Address</label>
+                                                <input type="email" class="form-control" name="email" id="email" placeholder="arun@example.com"/>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label class="form-label" for="city">City / District <span class="text-danger">*</span></label>
+                                                <input type="text" class="form-control" name="city" id="city" placeholder="e.g. Chennai / Hyderabad" required="required"/>
+                                            </div>
+                                            <div class="col-12">
+                                                <label class="form-label" for="street">Site Street Address <span class="text-danger">*</span></label>
+                                                <input type="text" class="form-control" name="street" id="street" placeholder="Plot / Street / Area" required="required"/>
+                                            </div>
+                                        </div>
+
+                                        <h5 class="border-bottom pb-2 mb-3 text-success">2. Solar System Requirements</h5>
+                                        <div class="row g-3 mb-3">
+                                            <div class="col-md-6">
+                                                <label class="form-label" for="requested_capacity_kw">Desired Capacity (kW)</label>
+                                                <select class="form-select" name="requested_capacity_kw" id="requested_capacity_kw">
+                                                    <option value="1.0">1 kW System</option>
+                                                    <option value="2.0">2 kW System</option>
+                                                    <option value="3.0" selected="selected">3 kW System (Recommended Residential)</option>
+                                                    <option value="4.0">4 kW System</option>
+                                                    <option value="5.0">5 kW System</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label class="form-label" for="system_type">System Architecture</label>
+                                                <select class="form-select" name="system_type" id="system_type">
+                                                    <option value="on_grid" selected="selected">On-Grid (Connected to Grid / Net-Meter)</option>
+                                                    <option value="off_grid">Off-Grid (With Battery Storage)</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label class="form-label" for="monthly_electricity_bill">Average Monthly Electricity Bill (₹)</label>
+                                                <input type="number" class="form-control" name="monthly_electricity_bill" id="monthly_electricity_bill" placeholder="e.g. 4500"/>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label class="form-label" for="shadow_free_roof_area">Estimated Shadow-Free Roof Area (Sq. Ft.)</label>
+                                                <input type="number" class="form-control" name="shadow_free_roof_area" id="shadow_free_roof_area" placeholder="e.g. 300"/>
+                                            </div>
+                                            <div class="col-12">
+                                                <div class="form-check mt-2">
+                                                    <input class="form-check-input" type="checkbox" name="subsidy_interest" id="subsidy_interest" value="1" checked="checked"/>
+                                                    <label class="form-check-label fw-bold" for="subsidy_interest">
+                                                        I am interested in applying for Government Rooftop Solar Subsidy
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="col-12">
+                                                <label class="form-label" for="roof_space_notes">Additional Observations or Questions</label>
+                                                <textarea class="form-control" name="roof_space_notes" id="roof_space_notes" rows="3" placeholder="Roof type (RCC concrete, tin shed), shading trees, power cut frequency..."></textarea>
+                                            </div>
+                                        </div>
+
+                                        <div class="d-grid gap-2 mt-4">
+                                            <button type="submit" class="btn btn-success btn-lg">
+                                                <i class="fa fa-paper-plane me-2"/> Submit Rooftop Solar Enquiry
+                                            </button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <!-- ================================================================== -->
+    <!-- Thank You Confirmation Template                                    -->
+    <!-- ================================================================== -->
+    <template id="solar_enquiry_thank_you_template" name="Solar Enquiry Thank You">
+        <t t-call="website.layout">
+            <div id="wrap" class="oe_structure oe_empty py-5">
+                <div class="container text-center py-5">
+                    <div class="card shadow-sm border-0 mx-auto" style="max-width: 600px;">
+                        <div class="card-body p-5">
+                            <div class="mb-4 text-success">
+                                <i class="fa fa-check-circle" style="font-size: 5rem;"/>
+                            </div>
+                            <h2 class="card-title text-success mb-3">Enquiry Received Successfully!</h2>
+                            <p class="lead text-muted mb-4">
+                                Thank you for choosing <strong>SunPower Solutions</strong>. Your rooftop solar enquiry has been assigned directly to our sales engineering team.
+                            </p>
+                            <t t-if="lead">
+                                <div class="alert alert-light border text-start mb-4">
+                                    <p class="mb-1"><strong>Reference:</strong> <t t-esc="lead.name"/></p>
+                                    <p class="mb-1"><strong>Customer:</strong> <t t-esc="lead.contact_name"/></p>
+                                    <p class="mb-1"><strong>System:</strong> <t t-esc="lead.requested_capacity_kw"/> kW <t t-esc="dict(on_grid='On-Grid', off_grid='Off-Grid').get(lead.requested_system_type, '')"/></p>
+                                    <p class="mb-0"><strong>Status:</strong> Technical Qualification &amp; Site Visit Scheduling</p>
+                                </div>
+                            </t>
+                            <a href="/" class="btn btn-outline-success">Return to Home</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+</odoo>
+

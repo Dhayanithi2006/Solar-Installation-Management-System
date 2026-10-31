@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- ================================================================== -->
+        <!-- Scenario 1: Reference Approved Site Survey (Arun Kumar - 3 kW)     -->
+        <!-- ================================================================== -->
+        <record id="survey_arun_kumar_approved" model="solar.site.survey">
+            <field name="name">SURV/2026/00001</field>
+            <field name="partner_id" ref="partner_arun_kumar"/>
+            <field name="lead_id" ref="crm_lead_arun_kumar_solar"/>
+            <field name="requested_capacity_kw">3.0</field>
+            <field name="system_type">on_grid</field>
+            <field name="monthly_bill_amount">4500.0</field>
+            <field name="shadow_free_roof_area">350.0</field>
+            <field name="roof_direction">south</field>
+            <field name="roof_tilt">15.0</field>
+            <field name="cable_distance">18.0</field>
+            <field name="roof_structure">rcc</field>
+            <field name="shading_analysis">no_shade</field>
+            <field name="grid_suitability">suitable</field>
+            <field name="observations">Terrace is flat RCC concrete with completely unshaded south exposure. Discom 3-phase meter board located 18 meters from inverter mounting wall.</field>
+            <field name="state">approved</field>
+            <field name="approver_id" ref="base.user_admin"/>
+        </record>
+    </data>
+</odoo>
+

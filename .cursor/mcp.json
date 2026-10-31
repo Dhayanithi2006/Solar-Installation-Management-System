@@ -1,0 +1,27 @@
+{
+  "mcpServers": {
+    "SunPowerSolutions": {
+      "command": "python",
+      "args": [
+        "mcp-server/server.py"
+      ],
+      "env": {
+        "MCP_TRANSPORT": "stdio",
+        "USE_MOCK_FALLBACK": "true",
+        "LOG_LEVEL": "INFO"
+      }
+    },
+    "StitchMCP": {
+      "$typeName": "exa.cascade_plugins_pb.CascadePluginCommandTemplate",
+      "command": "npx",
+      "args": [
+        "-y",
+        "mcp-remote",
+        "https://stitch.googleapis.com/mcp",
+        "--header",
+        "X-Goog-Api-Key: ${STITCH_API_KEY}"
+      ],
+      "env": {}
+    }
+  }
+}

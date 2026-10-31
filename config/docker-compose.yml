@@ -1,0 +1,73 @@
+version: '3.8'
+
+# ==============================================================================
+# SunPower Solutions — Odoo 18.0 Production & Development Deployment Stack
+# ==============================================================================
+
+services:
+  web:
+    image: odoo:18.0
+    container_name: sunpower_odoo_web
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - "8069:8069"
+      - "8072:8072"
+    environment:
+      - HOST=db
+      - USER=odoo
+      - PASSWORD=${POSTGRES_PASSWORD:-odoo_secure_pass_2026}
+    volumes:
+      - odoo-web-data:/var/lib/odoo
+      - ./odoo.conf:/etc/odoo/odoo.conf:ro
+      - ../addons:/mnt/extra-addons:ro
+      - ../backups:/var/lib/odoo/backups
+    healthcheck:
+      test: ["CMD-SHELL", "python3 -c 'import socket; s = socket.socket(); s.connect((\"127.0.0.1\", 8069)); s.close()'"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+    networks:
+      - sunpower_network
+    restart: unless-stopped
+
+  db:
+    image: postgres:16
+    container_name: sunpower_odoo_db
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=odoo
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-odoo_secure_pass_2026}
+      - PGDATA=/var/lib/postgresql/data/pgdata
+    volumes:
+      - odoo-db-data:/var/lib/postgresql/data/pgdata
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U odoo -d postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+    networks:
+      - sunpower_network
+    restart: unless-stopped
+
+volumes:
+  odoo-web-data:
+    driver: local
+  odoo-db-data:
+    driver: local
+
+networks:
+  sunpower_network:
+    driver: bridge

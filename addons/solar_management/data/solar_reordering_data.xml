@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- ================================================================== -->
+        <!-- Automated Reordering Rules for High-Turnover Solar Hardware        -->
+        <!-- ================================================================== -->
+        <!-- 1. Solar Panels (540W Mono PERC) -->
+        <record id="orderpoint_solar_panel_540w" model="stock.warehouse.orderpoint">
+            <field name="product_id" ref="product_solar_panel_540w"/>
+            <field name="location_id" ref="stock.stock_location_stock"/>
+            <field name="product_min_qty">20.0</field>
+            <field name="product_max_qty">60.0</field>
+            <field name="qty_multiple">1.0</field>
+        </record>
+
+        <!-- 2. Solar Inverters (1 kW, 3 kW, 5 kW) -->
+        <record id="orderpoint_solar_inverter_1kw" model="stock.warehouse.orderpoint">
+            <field name="product_id" ref="product_solar_inverter_1kw"/>
+            <field name="location_id" ref="stock.stock_location_stock"/>
+            <field name="product_min_qty">3.0</field>
+            <field name="product_max_qty">10.0</field>
+            <field name="qty_multiple">1.0</field>
+        </record>
+
+        <record id="orderpoint_solar_inverter_3kw" model="stock.warehouse.orderpoint">
+            <field name="product_id" ref="product_solar_inverter_3kw"/>
+            <field name="location_id" ref="stock.stock_location_stock"/>
+            <field name="product_min_qty">5.0</field>
+            <field name="product_max_qty">15.0</field>
+            <field name="qty_multiple">1.0</field>
+        </record>
+
+        <record id="orderpoint_solar_inverter_5kw" model="stock.warehouse.orderpoint">
+            <field name="product_id" ref="product_solar_inverter_5kw"/>
+            <field name="location_id" ref="stock.stock_location_stock"/>
+            <field name="product_min_qty">3.0</field>
+            <field name="product_max_qty">10.0</field>
+            <field name="qty_multiple">1.0</field>
+        </record>
+
+        <!-- 3. Storage Batteries (150Ah) -->
+        <record id="orderpoint_solar_battery_150ah" model="stock.warehouse.orderpoint">
+            <field name="product_id" ref="product_solar_battery_150ah"/>
+            <field name="location_id" ref="stock.stock_location_stock"/>
+            <field name="product_min_qty">4.0</field>
+            <field name="product_max_qty">12.0</field>
+            <field name="qty_multiple">1.0</field>
+        </record>
+
+        <!-- 4. Charge Controllers (MPPT 40A) -->
+        <record id="orderpoint_solar_controller_mppt" model="stock.warehouse.orderpoint">
+            <field name="product_id" ref="product_solar_charge_controller_mppt"/>
+            <field name="location_id" ref="stock.stock_location_stock"/>
+            <field name="product_min_qty">4.0</field>
+            <field name="product_max_qty">10.0</field>
+            <field name="qty_multiple">1.0</field>
+        </record>
+
+        <!-- 5. Mounting Structures & Hardware -->
+        <record id="orderpoint_solar_mounting_structure" model="stock.warehouse.orderpoint">
+            <field name="product_id" ref="product_solar_mounting_structure"/>
+            <field name="location_id" ref="stock.stock_location_stock"/>
+            <field name="product_min_qty">10.0</field>
+            <field name="product_max_qty">30.0</field>
+            <field name="qty_multiple">1.0</field>
+        </record>
+
+        <!-- 6. AC/DC Wiring Safety Boxes -->
+        <record id="orderpoint_solar_wiring_safety_box" model="stock.warehouse.orderpoint">
+            <field name="product_id" ref="product_solar_wiring_safety_box"/>
+            <field name="location_id" ref="stock.stock_location_stock"/>
+            <field name="product_min_qty">5.0</field>
+            <field name="product_max_qty">20.0</field>
+            <field name="qty_multiple">1.0</field>
+        </record>
+
+        <!-- 7. Solar DC Cable (Meters) -->
+        <record id="orderpoint_solar_dc_cable" model="stock.warehouse.orderpoint">
+            <field name="product_id" ref="product_solar_dc_cable"/>
+            <field name="location_id" ref="stock.stock_location_stock"/>
+            <field name="product_min_qty">200.0</field>
+            <field name="product_max_qty">1000.0</field>
+            <field name="qty_multiple">50.0</field>
+        </record>
+    </data>
+</odoo>
+

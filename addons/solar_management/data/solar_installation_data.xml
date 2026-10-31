@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- ================================================================== -->
+        <!-- Scenario 4: Reference Installation Job (Arun Kumar 3 kW On-Grid)   -->
+        <!-- ================================================================== -->
+        <record id="installation_arun_kumar_3kw" model="solar.installation">
+            <field name="name">INST/2026/00001</field>
+            <field name="partner_id" ref="partner_arun_kumar"/>
+            <field name="sale_order_id" ref="sale_order_arun_kumar_3kw"/>
+            <field name="survey_id" ref="survey_arun_kumar_approved"/>
+            <field name="lead_technician_id" ref="base.user_admin"/>
+            <field name="planned_start">2026-10-15 08:30:00</field>
+            <field name="planned_finish">2026-10-15 17:00:00</field>
+            <field name="actual_start">2026-10-15 09:00:00</field>
+            <field name="actual_finish">2026-10-15 16:30:00</field>
+            <field name="technician_hourly_rate">500.0</field>
+            <field name="cost_materials">126000.0</field>
+            <field name="installed_capacity_kw">3.0</field>
+            <field name="test_dc_voltage">380.0</field>
+            <field name="test_ac_voltage">232.0</field>
+            <field name="test_generation_kw">2.85</field>
+            <field name="generation_confirmed">True</field>
+            <field name="test_result">passed</field>
+            <field name="technician_notes">All 6 panels mounted on South-facing elevated aluminum frames. DC string voltage stable at 380V. Inverter synchronized with grid in 45 seconds. Peak power generation clocked at 2.85 kW under clear sunlight.</field>
+            <field name="customer_signed_by">Arun Kumar</field>
+            <field name="state">scheduled</field>
+        </record>
+    </data>
+</odoo>
+

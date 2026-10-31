@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- ================================================================== -->
+    <!-- Inherit Account Move Form View (Solar Installation & Costing)      -->
+    <!-- ================================================================== -->
+    <record id="view_move_form_solar_inherit" model="ir.ui.view">
+        <field name="name">account.move.form.solar.inherit</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_move_form"/>
+        <field name="arch" type="xml">
+            <!-- Add smart button to navigate to solar installation -->
+            <xpath expr="//div[@name='button_box']" position="inside">
+                <button name="action_view_solar_installation"
+                        type="object"
+                        class="oe_stat_button"
+                        icon="fa-sun-o"
+                        invisible="not installation_id">
+                    <div class="o_stat_info">
+                        <span class="o_stat_text">Solar Job</span>
+                    </div>
+                </button>
+            </xpath>
+
+            <!-- Add Solar Project & Costing Attribution Details -->
+            <xpath expr="//field[@name='partner_id']" position="after">
+                <field name="installation_id"
+                       placeholder="Link to Solar Installation..."
+                       options="{'no_create': True}"/>
+                <field name="solar_expense_type"
+                       invisible="move_type in ('out_invoice', 'out_refund')"
+                       required="installation_id and move_type in ('in_invoice', 'in_refund')"/>
+                <field name="is_solar_invoice" invisible="1"/>
+                <field name="is_solar_expense" invisible="1"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- ================================================================== -->
+    <!-- Inherit Account Invoice Search View                                -->
+    <!-- ================================================================== -->
+    <record id="view_account_invoice_filter_solar_inherit" model="ir.ui.view">
+        <field name="name">account.invoice.select.solar.inherit</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_account_invoice_filter"/>
+        <field name="arch" type="xml">
+            <xpath expr="//search" position="inside">
+                <separator/>
+                <filter string="Solar Invoices" name="filter_solar_invoices" domain="[('is_solar_invoice', '=', True)]"/>
+                <filter string="Solar Project Expenses" name="filter_solar_expenses" domain="[('is_solar_expense', '=', True)]"/>
+                <field name="installation_id" string="Solar Job"/>
+                <field name="solar_expense_type" string="Expense Category"/>
+                <group expand="0" string="Solar Group By">
+                    <filter string="Solar Installation" name="group_by_installation" context="{'group_by': 'installation_id'}"/>
+                    <filter string="Expense Category" name="group_by_expense_type" context="{'group_by': 'solar_expense_type'}"/>
+                </group>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- ================================================================== -->
+    <!-- Window Actions: Solar Invoices & Direct Project Expenses           -->
+    <!-- ================================================================== -->
+    <record id="action_solar_customer_invoices" model="ir.actions.act_window">
+        <field name="name">Solar Customer Invoices</field>
+        <field name="res_model">account.move</field>
+        <field name="view_mode">list,form,kanban</field>
+        <field name="domain">[('move_type', 'in', ('out_invoice', 'out_refund')), ('is_solar_invoice', '=', True)]</field>
+        <field name="context">{
+            'default_move_type': 'out_invoice',
+            'search_default_filter_solar_invoices': 1,
+        }</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No Solar Customer Invoices Found
+            </p>
+            <p>
+                Invoices generated from confirmed solar quotation orders are tracked here to measure gross margin and revenue.
+            </p>
+        </field>
+    </record>
+
+    <record id="action_solar_project_expenses" model="ir.actions.act_window">
+        <field name="name">Attributable Project Expenses</field>
+        <field name="res_model">account.move</field>
+        <field name="view_mode">list,form,kanban</field>
+        <field name="domain">[('move_type', 'in', ('in_invoice', 'in_refund')), ('is_solar_expense', '=', True)]</field>
+        <field name="context">{
+            'default_move_type': 'in_invoice',
+            'default_solar_expense_type': 'freight',
+            'search_default_filter_solar_expenses': 1,
+        }</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Record Direct Attributable Project Expenses
+            </p>
+            <p>
+                Log vendor bills for Freight &amp; Transport, DISCOM Net-Metering Permits, CEIG Electrical Inspection, and Mounting Hardware to track DEC-007 contribution profit.
+            </p>
+        </field>
+    </record>
+</odoo>
+

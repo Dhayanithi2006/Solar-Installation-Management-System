@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- ================================================================== -->
+    <!-- QWeb Report Action: Solar Delivery Slip                            -->
+    <!-- ================================================================== -->
+    <record id="action_report_solar_delivery_slip" model="ir.actions.report">
+        <field name="name">Solar Installation Equipment Delivery Slip</field>
+        <field name="model">stock.picking</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">solar_management.report_solar_delivery_slip_document</field>
+        <field name="report_file">solar_management.report_solar_delivery_slip_document</field>
+        <field name="print_report_name">'Solar_Delivery_Slip_' + (object.name or '').replace('/', '_')</field>
+        <field name="binding_model_id" ref="stock.model_stock_picking"/>
+        <field name="binding_type">report</field>
+    </record>
+
+    <!-- ================================================================== -->
+    <!-- QWeb Report Template: Solar Equipment Dispatch & Warranty Slip     -->
+    <!-- ================================================================== -->
+    <template id="report_solar_delivery_slip_document">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="web.external_layout">
+                    <div class="page" style="font-family: sans-serif; font-size: 13px;">
+                        <div class="row border-bottom pb-3 mb-4">
+                            <div class="col-8">
+                                <h2 class="text-success fw-bold mb-1">SunPower Solutions</h2>
+                                <h5 class="text-muted">Solar Equipment Delivery &amp; Warranty Dispatch Slip</h5>
+                            </div>
+                            <div class="col-4 text-end">
+                                <h4><strong><span t-field="o.name"/></strong></h4>
+                                <span class="badge text-bg-success">Dispatch Completed</span>
+                            </div>
+                        </div>
+
+                        <!-- Customer & Installation Metadata -->
+                        <div class="row mb-4">
+                            <div class="col-6">
+                                <div class="card p-3 border-0 bg-light">
+                                    <h6 class="fw-bold text-success border-bottom pb-1">Customer &amp; Site Details</h6>
+                                    <div><strong>Customer:</strong> <span t-field="o.partner_id.name"/></div>
+                                    <div><strong>Site Address:</strong> <span t-field="o.partner_id.street"/>, <span t-field="o.partner_id.city"/></div>
+                                    <div><strong>Phone:</strong> <span t-field="o.partner_id.phone"/></div>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="card p-3 border-0 bg-light">
+                                    <h6 class="fw-bold text-success border-bottom pb-1">Installation &amp; Order Reference</h6>
+                                    <div><strong>Sales Order:</strong> <span t-field="o.sale_id.name"/></div>
+                                    <div><strong>Installation Job:</strong> <span t-field="o.installation_id.name"/></div>
+                                    <div><strong>Delivery Date:</strong> <span t-field="o.date_done" t-options="{'widget': 'date'}"/></div>
+                                    <div t-if="o.survey_id"><strong>Site Survey Ref:</strong> <span t-field="o.survey_id.name"/></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Delivered Equipment Table -->
+                        <h5 class="fw-bold text-success mb-2">Delivered Hardware &amp; Serialized Assets</h5>
+                        <table class="table table-bordered table-sm align-middle mb-4">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>#</th>
+                                    <th>Hardware Component</th>
+                                    <th>Category</th>
+                                    <th class="text-center">Qty</th>
+                                    <th>Serial Number &amp; Barcode</th>
+                                    <th>Warranty Policy</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-set="idx" t-value="1"/>
+                                <t t-foreach="o.move_line_ids" t-as="line">
+                                    <tr>
+                                        <td><span t-esc="idx"/></td>
+                                        <td>
+                                            <strong><span t-field="line.product_id.name"/></strong>
+                                        </td>
+                                        <td>
+                                            <span t-field="line.product_id.solar_component_type"/>
+                                        </td>
+                                        <td class="text-center">
+                                            <span t-field="line.quantity"/> <span t-field="line.product_uom_id.name"/>
+                                        </td>
+                                        <td>
+                                            <t t-if="line.lot_id">
+                                                <div class="fw-bold text-primary"><span t-field="line.lot_id.name"/></div>
+                                                <img t-att-src="'/report/barcode/?barcode_type=Code128&amp;value=%s&amp;width=300&amp;height=60' % line.lot_id.name"
+                                                     style="width: 150px; height: 30px; margin-top: 2px;"
+                                                     alt="Barcode"/>
+                                            </t>
+                                            <t t-else="">
+                                                <span class="text-muted">N/A (Batch / Non-Serialized)</span>
+                                            </t>
+                                        </td>
+                                        <td>
+                                            <t t-if="line.product_id.default_warranty_rule_id">
+                                                <span t-field="line.product_id.default_warranty_rule_id.name"/>
+                                            </t>
+                                            <t t-else="">
+                                                <span class="text-muted">Standard Terms</span>
+                                            </t>
+                                        </td>
+                                    </tr>
+                                    <t t-set="idx" t-value="idx + 1"/>
+                                </t>
+                            </tbody>
+                        </table>
+
+                        <!-- Acceptance Signatures -->
+                        <div class="row mt-5 pt-4">
+                            <div class="col-6">
+                                <div class="border-top pt-2 text-center" style="margin-top: 60px;">
+                                    <strong>Warehouse Dispatch Officer</strong>
+                                    <p class="text-muted small mb-0">Dispatched from Central Warehouse</p>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="border-top pt-2 text-center" style="margin-top: 60px;">
+                                    <strong>Customer Receiving Acknowledgment</strong>
+                                    <p class="text-muted small mb-0">Hardware received in good physical condition</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Notice Footer -->
+                        <div class="text-center text-muted small mt-5 border-top pt-2">
+                            Warranty starts on the date of physical delivery indicated above. Preserving this delivery slip and equipment serial numbers is required for warranty service claims.
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>
+

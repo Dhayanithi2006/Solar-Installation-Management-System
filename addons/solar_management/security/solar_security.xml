@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="0">
+        <!-- ================================================================== -->
+        <!-- Module Category                                                    -->
+        <!-- ================================================================== -->
+        <record id="module_category_solar_management" model="ir.module.category">
+            <field name="name">Solar Installation Management</field>
+            <field name="description">Manage rooftop solar customer journeys, site surveys, package BoMs, installations, warranties, and repairs.</field>
+            <field name="sequence">25</field>
+        </record>
+
+        <!-- Base Solar User Group -->
+        <record id="group_solar_user" model="res.groups">
+            <field name="name">Solar User (Base)</field>
+            <field name="category_id" ref="module_category_solar_management"/>
+            <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+        </record>
+
+        <!-- 1. Sales Executive Role -->
+        <record id="group_solar_sales" model="res.groups">
+            <field name="name">Sales Executive</field>
+            <field name="category_id" ref="module_category_solar_management"/>
+            <field name="implied_ids" eval="[(4, ref('group_solar_user')), (4, ref('sales_team.group_sale_salesman'))]"/>
+        </record>
+
+        <!-- 2. Survey Technician Role -->
+        <record id="group_solar_survey_tech" model="res.groups">
+            <field name="name">Survey Technician</field>
+            <field name="category_id" ref="module_category_solar_management"/>
+            <field name="implied_ids" eval="[(4, ref('group_solar_user'))]"/>
+        </record>
+
+        <!-- 3. Survey Approver / Manager Role -->
+        <record id="group_solar_survey_manager" model="res.groups">
+            <field name="name">Survey Approver / Manager</field>
+            <field name="category_id" ref="module_category_solar_management"/>
+            <field name="implied_ids" eval="[(4, ref('group_solar_survey_tech'))]"/>
+        </record>
+
+        <!-- 4. Warehouse Operator Role -->
+        <record id="group_solar_warehouse" model="res.groups">
+            <field name="name">Warehouse Operator</field>
+            <field name="category_id" ref="module_category_solar_management"/>
+            <field name="implied_ids" eval="[(4, ref('group_solar_user')), (4, ref('stock.group_stock_user'))]"/>
+        </record>
+
+        <!-- 5. Installation Technician Role -->
+        <record id="group_solar_installer" model="res.groups">
+            <field name="name">Installation Technician</field>
+            <field name="category_id" ref="module_category_solar_management"/>
+            <field name="implied_ids" eval="[(4, ref('group_solar_user'))]"/>
+        </record>
+
+        <record id="group_solar_technician" model="res.groups">
+            <field name="name">Installation Technician (Alias)</field>
+            <field name="category_id" ref="module_category_solar_management"/>
+            <field name="implied_ids" eval="[(4, ref('group_solar_installer'))]"/>
+        </record>
+
+        <!-- 6. Customer Service Agent Role -->
+        <record id="group_solar_service" model="res.groups">
+            <field name="name">Customer Service Agent</field>
+            <field name="category_id" ref="module_category_solar_management"/>
+            <field name="implied_ids" eval="[(4, ref('group_solar_user'))]"/>
+        </record>
+
+        <!-- 7. Service Supervisor / Manager Role -->
+        <record id="group_solar_service_manager" model="res.groups">
+            <field name="name">Service Manager</field>
+            <field name="category_id" ref="module_category_solar_management"/>
+            <field name="implied_ids" eval="[(4, ref('group_solar_service'))]"/>
+        </record>
+
+        <!-- 8. Accountant / Financial Analyst Role -->
+        <record id="group_solar_accountant" model="res.groups">
+            <field name="name">Accountant</field>
+            <field name="category_id" ref="module_category_solar_management"/>
+            <field name="implied_ids" eval="[(4, ref('group_solar_user')), (4, ref('account.group_account_invoice'))]"/>
+        </record>
+
+        <!-- 9. Director / Executive Role -->
+        <record id="group_solar_director" model="res.groups">
+            <field name="name">Director / Executive</field>
+            <field name="category_id" ref="module_category_solar_management"/>
+            <field name="implied_ids" eval="[(4, ref('group_solar_user'))]"/>
+        </record>
+
+        <!-- 10. Solar System Administrator Role -->
+        <record id="group_solar_manager" model="res.groups">
+            <field name="name">System Administrator</field>
+            <field name="category_id" ref="module_category_solar_management"/>
+            <field name="implied_ids" eval="[
+                (4, ref('group_solar_sales')),
+                (4, ref('group_solar_survey_manager')),
+                (4, ref('group_solar_warehouse')),
+                (4, ref('group_solar_installer')),
+                (4, ref('group_solar_service_manager')),
+                (4, ref('group_solar_accountant')),
+                (4, ref('group_solar_director')),
+                (4, ref('sales_team.group_sale_manager')),
+                (4, ref('stock.group_stock_manager')),
+                (4, ref('mrp.group_mrp_manager')),
+            ]"/>
+            <field name="users" eval="[(4, ref('base.user_root')), (4, ref('base.user_admin'))]"/>
+        </record>
+    </data>
+</odoo>

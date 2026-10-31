@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- ================================================================== -->
+    <!-- Stock Lot Form View Extension                                      -->
+    <!-- ================================================================== -->
+    <record id="view_production_lot_form_inherit_solar" model="ir.ui.view">
+        <field name="name">stock.lot.form.solar</field>
+        <field name="model">stock.lot</field>
+        <field name="inherit_id" ref="stock.view_production_lot_form"/>
+        <field name="arch" type="xml">
+            <!-- Smart Buttons for Warranty & Tickets -->
+            <xpath expr="//div[hasclass('oe_button_box')]" position="inside">
+                <button name="action_view_warranty"
+                        type="object"
+                        class="oe_stat_button"
+                        icon="fa-shield"
+                        invisible="not is_solar_equipment">
+                    <div class="o_stat_info">
+                        <span class="o_stat_text">Warranty</span>
+                        <field name="warranty_status" widget="badge"
+                               decoration-success="warranty_status == 'active'"
+                               decoration-danger="warranty_status == 'expired'"
+                               decoration-muted="warranty_status == 'no_warranty'"/>
+                    </div>
+                </button>
+                <button name="action_view_service_tickets"
+                        type="object"
+                        class="oe_stat_button"
+                        icon="fa-wrench"
+                        invisible="not is_solar_equipment">
+                    <span class="o_stat_text">Tickets</span>
+                </button>
+            </xpath>
+
+            <!-- Solar Equipment Ownership & Deployment Details -->
+            <xpath expr="//group[@name='main_group']" position="after">
+                <group string="Solar Ownership &amp; Installation Deployment" invisible="not is_solar_equipment">
+                    <group>
+                        <field name="customer_id" options="{'no_create': True}"/>
+                        <field name="installation_id" options="{'no_create': True}"/>
+                    </group>
+                    <group>
+                        <field name="solar_component_type"/>
+                        <field name="warranty_record_id" readonly="1"/>
+                        <field name="is_solar_equipment" invisible="1"/>
+                    </group>
+                </group>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- ================================================================== -->
+    <!-- Stock Lot List / Tree View Extension                               -->
+    <!-- ================================================================== -->
+    <record id="view_production_lot_tree_inherit_solar" model="ir.ui.view">
+        <field name="name">stock.lot.list.solar</field>
+        <field name="model">stock.lot</field>
+        <field name="inherit_id" ref="stock.view_production_lot_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='product_id']" position="after">
+                <field name="customer_id" optional="show"/>
+                <field name="solar_component_type" optional="show"/>
+                <field name="warranty_status"
+                       widget="badge"
+                       decoration-success="warranty_status == 'active'"
+                       decoration-danger="warranty_status == 'expired'"
+                       decoration-muted="warranty_status == 'no_warranty'"
+                       optional="show"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- ================================================================== -->
+    <!-- Stock Lot Search View Extension                                    -->
+    <!-- ================================================================== -->
+    <record id="search_product_lot_filter_inherit_solar" model="ir.ui.view">
+        <field name="name">stock.lot.search.solar</field>
+        <field name="model">stock.lot</field>
+        <field name="inherit_id" ref="stock.search_product_lot_filter"/>
+        <field name="arch" type="xml">
+            <xpath expr="//filter[@name='group_by_product']" position="after">
+                <separator/>
+                <filter string="Solar Equipment"
+                        name="filter_solar_equipment"
+                        domain="[('is_solar_equipment', '=', True)]"/>
+                <filter string="Under Active Warranty"
+                        name="filter_active_warranty"
+                        domain="[('warranty_status', '=', 'active')]"/>
+                <filter string="Warranty Expired"
+                        name="filter_expired_warranty"
+                        domain="[('warranty_status', '=', 'expired')]"/>
+                <filter string="Deployed to Customer"
+                        name="filter_assigned_customer"
+                        domain="[('customer_id', '!=', False)]"/>
+            </xpath>
+            <xpath expr="//group" position="inside">
+                <filter string="Customer Owner"
+                        name="group_by_customer"
+                        context="{'group_by': 'customer_id'}"/>
+                <filter string="Equipment Type"
+                        name="group_by_component_type"
+                        context="{'group_by': 'solar_component_type'}"/>
+                <filter string="Warranty Status"
+                        name="group_by_warranty_status"
+                        context="{'group_by': 'warranty_status'}"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- ================================================================== -->
+    <!-- Window Action: Solar Equipment & Serial Registry                   -->
+    <!-- ================================================================== -->
+    <record id="action_solar_equipment_lot" model="ir.actions.act_window">
+        <field name="name">Serialized Solar Equipment</field>
+        <field name="res_model">stock.lot</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('is_solar_equipment', '=', True)]</field>
+        <field name="context">{'search_default_filter_solar_equipment': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No serialized equipment recorded
+            </p>
+            <p>
+                Inverters, batteries, and charge controllers tracked by unique serial numbers appear here upon receipt and customer dispatch.
+            </p>
+        </field>
+    </record>
+
+    <!-- ================================================================== -->
+    <!-- Menu Item under Solar Operations                                   -->
+    <!-- ================================================================== -->
+    <menuitem id="menu_solar_equipment_lots"
+              name="Serialized Equipment"
+              parent="menu_solar_operations"
+              action="action_solar_equipment_lot"
+              sequence="24"/>
+</odoo>
+

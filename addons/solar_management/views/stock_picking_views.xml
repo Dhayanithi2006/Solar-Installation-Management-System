@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- ================================================================== -->
+    <!-- Stock Picking Form View Extension                                  -->
+    <!-- ================================================================== -->
+    <record id="view_picking_form_inherit_solar" model="ir.ui.view">
+        <field name="name">stock.picking.form.solar</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.view_picking_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//header" position="inside">
+                <button name="action_scan_serial_barcode"
+                        type="object"
+                        string="Scan Serial"
+                        class="btn-secondary"
+                        invisible="state in ('done', 'cancel') or not has_serialized_items"/>
+            </xpath>
+            <xpath expr="//field[@name='origin']" position="after">
+                <field name="is_solar_picking" invisible="1"/>
+                <field name="has_serialized_items" invisible="1"/>
+                <field name="installation_id"
+                       invisible="not is_solar_picking"
+                       options="{'no_create': True}"/>
+                <field name="survey_id"
+                       invisible="not survey_id"
+                       readonly="1"/>
+                <field name="barcode_scan_input"
+                       placeholder="Scan or enter serial number..."
+                       invisible="state in ('done', 'cancel') or not has_serialized_items"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- ================================================================== -->
+    <!-- Stock Picking Search View Extension                                -->
+    <!-- ================================================================== -->
+    <record id="view_picking_internal_search_inherit_solar" model="ir.ui.view">
+        <field name="name">stock.picking.search.solar</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.view_picking_internal_search"/>
+        <field name="arch" type="xml">
+            <xpath expr="//filter[@name='my_transfers']" position="after">
+                <separator/>
+                <filter string="Solar Dispatches"
+                        name="filter_solar_dispatches"
+                        domain="[('is_solar_picking', '=', True)]"/>
+                <filter string="Requires Serial Scan"
+                        name="filter_serialized_dispatches"
+                        domain="[('has_serialized_items', '=', True)]"/>
+            </xpath>
+            <xpath expr="//group" position="inside">
+                <filter string="Installation Job"
+                        name="group_by_installation"
+                        context="{'group_by': 'installation_id'}"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- ================================================================== -->
+    <!-- Window Action: Solar Warehouse Dispatches                          -->
+    <!-- ================================================================== -->
+    <record id="action_solar_warehouse_picking" model="ir.actions.act_window">
+        <field name="name">Solar Warehouse Dispatches</field>
+        <field name="res_model">stock.picking</field>
+        <field name="view_mode">list,kanban,form,calendar</field>
+        <field name="domain">[('is_solar_picking', '=', True)]</field>
+        <field name="context">{'default_is_solar_picking': True}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No active solar equipment delivery dispatches
+            </p>
+            <p>
+                Warehouse delivery pickings generated from confirmed rooftop solar orders are tracked here.
+            </p>
+        </field>
+    </record>
+
+    <!-- ================================================================== -->
+    <!-- Menu Item under Solar Operations                                   -->
+    <!-- ================================================================== -->
+    <menuitem id="menu_solar_dispatches"
+              name="Warehouse Dispatches"
+              parent="menu_solar_operations"
+              action="action_solar_warehouse_picking"
+              sequence="22"/>
+</odoo>
+

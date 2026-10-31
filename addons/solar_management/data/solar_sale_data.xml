@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- ================================================================== -->
+        <!-- Scenario 2: Reference Quotation & Advance (Arun Kumar 3 kW)        -->
+        <!-- ================================================================== -->
+        <record id="sale_order_arun_kumar_3kw" model="sale.order">
+            <field name="partner_id" ref="partner_arun_kumar"/>
+            <field name="opportunity_id" ref="crm_lead_arun_kumar_solar"/>
+            <field name="survey_id" ref="survey_arun_kumar_approved"/>
+            <field name="package_id" ref="solar_package_on_grid_3kw"/>
+            <field name="advance_payment_policy">percentage</field>
+            <field name="advance_percentage">20.0</field>
+            <field name="advance_amount_paid">37800.0</field>
+            <field name="advance_payment_notes">NEFT Ref: HDFC99882211 - Advance 20% Received</field>
+            <field name="order_line" eval="[
+                (0, 0, {
+                    'product_id': ref('pkg_product_on_grid_3kw'),
+                    'product_uom_qty': 1.0,
+                    'price_unit': 189000.0,
+                    'name': '3 kW On-Grid Solar Package (Complete Rooftop Kit with Inverter, Panels &amp; Mounting)',
+                })
+            ]"/>
+        </record>
+    </data>
+</odoo>
+

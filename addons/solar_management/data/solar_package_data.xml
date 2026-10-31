@@ -1,0 +1,305 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- ============================================================== -->
+        <!-- 1 kW On-Grid Solar Package (Kit)                               -->
+        <!-- ============================================================== -->
+        <record id="pkg_product_on_grid_1kw" model="product.product">
+            <field name="name">SunPower 1 kW On-Grid Rooftop Solar Package</field>
+            <field name="categ_id" ref="categ_solar_packages"/>
+            <field name="list_price">65000.00</field>
+            <field name="type">consu</field>
+            <field name="is_storable" eval="True"/>
+            <field name="is_solar_component" eval="True"/>
+            <field name="solar_component_type">panel</field>
+            <field name="description_sale">Complete 1 kW Grid-Tied Solar System with Panels, Inverter, Stands, and Safety Equipment.</field>
+        </record>
+
+        <record id="bom_on_grid_1kw" model="mrp.bom">
+            <field name="product_tmpl_id" ref="pkg_product_on_grid_1kw"/>
+            <field name="product_qty">1.0</field>
+            <field name="type">phantom</field>
+        </record>
+        <record id="bom_line_og1_panel" model="mrp.bom.line">
+            <field name="bom_id" ref="bom_on_grid_1kw"/>
+            <field name="product_id" ref="product_solar_panel_540w"/>
+            <field name="product_qty">2.0</field>
+        </record>
+        <record id="bom_line_og1_inv" model="mrp.bom.line">
+            <field name="bom_id" ref="bom_on_grid_1kw"/>
+            <field name="product_id" ref="product_solar_inverter_1kw"/>
+            <field name="product_qty">1.0</field>
+        </record>
+        <record id="bom_line_og1_ctrl" model="mrp.bom.line">
+            <field name="bom_id" ref="bom_on_grid_1kw"/>
+            <field name="product_id" ref="product_solar_charge_controller_mppt"/>
+            <field name="product_qty">1.0</field>
+        </record>
+        <record id="bom_line_og1_struct" model="mrp.bom.line">
+            <field name="bom_id" ref="bom_on_grid_1kw"/>
+            <field name="product_id" ref="product_solar_mounting_structure"/>
+            <field name="product_qty">1.0</field>
+        </record>
+        <record id="bom_line_og1_box" model="mrp.bom.line">
+            <field name="bom_id" ref="bom_on_grid_1kw"/>
+            <field name="product_id" ref="product_solar_wiring_safety_box"/>
+            <field name="product_qty">1.0</field>
+        </record>
+        <record id="bom_line_og1_cable" model="mrp.bom.line">
+            <field name="bom_id" ref="bom_on_grid_1kw"/>
+            <field name="product_id" ref="product_solar_dc_cable"/>
+            <field name="product_qty">15.0</field>
+        </record>
+
+        <record id="solar_package_on_grid_1kw" model="solar.package">
+            <field name="name">1 kW On-Grid System</field>
+            <field name="system_type">on_grid</field>
+            <field name="capacity_kw">1.0</field>
+            <field name="product_tmpl_id" ref="pkg_product_on_grid_1kw"/>
+            <field name="bom_id" ref="bom_on_grid_1kw"/>
+        </record>
+
+        <!-- ============================================================== -->
+        <!-- 3 kW On-Grid Solar Package (Kit — Source Scenario 2 Baseline)   -->
+        <!-- ============================================================== -->
+        <record id="pkg_product_on_grid_3kw" model="product.product">
+            <field name="name">SunPower 3 kW On-Grid Rooftop Solar Package</field>
+            <field name="categ_id" ref="categ_solar_packages"/>
+            <field name="list_price">175000.00</field>
+            <field name="type">consu</field>
+            <field name="is_storable" eval="True"/>
+            <field name="is_solar_component" eval="True"/>
+            <field name="solar_component_type">panel</field>
+            <field name="description_sale">Complete 3 kW Grid-Tied Solar Rooftop Package (6x 540W Mono PERC Panels, 3kW Inverter, Mounting Stands, AC/DC Box, Earthing Kit).</field>
+        </record>
+
+        <record id="bom_on_grid_3kw" model="mrp.bom">
+            <field name="product_tmpl_id" ref="pkg_product_on_grid_3kw"/>
+            <field name="product_qty">1.0</field>
+            <field name="type">phantom</field>
+        </record>
+        <record id="bom_line_og3_panel" model="mrp.bom.line">
+            <field name="bom_id" ref="bom_on_grid_3kw"/>
+            <field name="product_id" ref="product_solar_panel_540w"/>
+            <field name="product_qty">6.0</field>
+        </record>
+        <record id="bom_line_og3_inv" model="mrp.bom.line">
+            <field name="bom_id" ref="bom_on_grid_3kw"/>
+            <field name="product_id" ref="product_solar_inverter_3kw"/>
+            <field name="product_qty">1.0</field>
+        </record>
+        <record id="bom_line_og3_ctrl" model="mrp.bom.line">
+            <field name="bom_id" ref="bom_on_grid_3kw"/>
+            <field name="product_id" ref="product_solar_charge_controller_mppt"/>
+            <field name="product_qty">1.0</field>
+        </record>
+        <record id="bom_line_og3_struct" model="mrp.bom.line">
+            <field name="bom_id" ref="bom_on_grid_3kw"/>
+            <field name="product_id" ref="product_solar_mounting_structure"/>
+            <field name="product_qty">3.0</field>
+        </record>
+        <record id="bom_line_og3_box" model="mrp.bom.line">
+            <field name="bom_id" ref="bom_on_grid_3kw"/>
+            <field name="product_id" ref="product_solar_wiring_safety_box"/>
+            <field name="product_qty">1.0</field>
+        </record>
+        <record id="bom_line_og3_cable" model="mrp.bom.line">
+            <field name="bom_id" ref="bom_on_grid_3kw"/>
+            <field name="product_id" ref="product_solar_dc_cable"/>
+            <field name="product_qty">30.0</field>
+        </record>
+
+        <record id="solar_package_on_grid_3kw" model="solar.package">
+            <field name="name">3 kW On-Grid System</field>
+            <field name="system_type">on_grid</field>
+            <field name="capacity_kw">3.0</field>
+            <field name="product_tmpl_id" ref="pkg_product_on_grid_3kw"/>
+            <field name="bom_id" ref="bom_on_grid_3kw"/>
+        </record>
+
+        <!-- ============================================================== -->
+        <!-- 5 kW On-Grid Solar Package (Kit)                               -->
+        <!-- ============================================================== -->
+        <record id="pkg_product_on_grid_5kw" model="product.product">
+            <field name="name">SunPower 5 kW On-Grid Rooftop Solar Package</field>
+            <field name="categ_id" ref="categ_solar_packages"/>
+            <field name="list_price">285000.00</field>
+            <field name="type">consu</field>
+            <field name="is_storable" eval="True"/>
+            <field name="is_solar_component" eval="True"/>
+            <field name="solar_component_type">panel</field>
+            <field name="description_sale">Commercial/Residential 5 kW High-Yield Grid-Tied Solar System.</field>
+        </record>
+
+        <record id="bom_on_grid_5kw" model="mrp.bom">
+            <field name="product_tmpl_id" ref="pkg_product_on_grid_5kw"/>
+            <field name="product_qty">1.0</field>
+            <field name="type">phantom</field>
+        </record>
+        <record id="bom_line_og5_panel" model="mrp.bom.line">
+            <field name="bom_id" ref="bom_on_grid_5kw"/>
+            <field name="product_id" ref="product_solar_panel_540w"/>
+            <field name="product_qty">10.0</field>
+        </record>
+        <record id="bom_line_og5_inv" model="mrp.bom.line">
+            <field name="bom_id" ref="bom_on_grid_5kw"/>
+            <field name="product_id" ref="product_solar_inverter_5kw"/>
+            <field name="product_qty">1.0</field>
+        </record>
+        <record id="bom_line_og5_ctrl" model="mrp.bom.line">
+            <field name="bom_id" ref="bom_on_grid_5kw"/>
+            <field name="product_id" ref="product_solar_charge_controller_mppt"/>
+            <field name="product_qty">1.0</field>
+        </record>
+        <record id="bom_line_og5_struct" model="mrp.bom.line">
+            <field name="bom_id" ref="bom_on_grid_5kw"/>
+            <field name="product_id" ref="product_solar_mounting_structure"/>
+            <field name="product_qty">5.0</field>
+        </record>
+        <record id="bom_line_og5_box" model="mrp.bom.line">
+            <field name="bom_id" ref="bom_on_grid_5kw"/>
+            <field name="product_id" ref="product_solar_wiring_safety_box"/>
+            <field name="product_qty">1.0</field>
+        </record>
+        <record id="bom_line_og5_cable" model="mrp.bom.line">
+            <field name="bom_id" ref="bom_on_grid_5kw"/>
+            <field name="product_id" ref="product_solar_dc_cable"/>
+            <field name="product_qty">50.0</field>
+        </record>
+
+        <record id="solar_package_on_grid_5kw" model="solar.package">
+            <field name="name">5 kW On-Grid System</field>
+            <field name="system_type">on_grid</field>
+            <field name="capacity_kw">5.0</field>
+            <field name="product_tmpl_id" ref="pkg_product_on_grid_5kw"/>
+            <field name="bom_id" ref="bom_on_grid_5kw"/>
+        </record>
+
+        <!-- ============================================================== -->
+        <!-- 3 kW Off-Grid Solar Package (Kit — with Battery Storage)       -->
+        <!-- ============================================================== -->
+        <record id="pkg_product_off_grid_3kw" model="product.product">
+            <field name="name">SunPower 3 kW Off-Grid Solar Package (with Battery Bank)</field>
+            <field name="categ_id" ref="categ_solar_packages"/>
+            <field name="list_price">245000.00</field>
+            <field name="type">consu</field>
+            <field name="is_storable" eval="True"/>
+            <field name="is_solar_component" eval="True"/>
+            <field name="solar_component_type">panel</field>
+            <field name="description_sale">Complete 3 kW Off-Grid Rooftop Solar Package with 150Ah Battery Energy Storage.</field>
+        </record>
+
+        <record id="bom_off_grid_3kw" model="mrp.bom">
+            <field name="product_tmpl_id" ref="pkg_product_off_grid_3kw"/>
+            <field name="product_qty">1.0</field>
+            <field name="type">phantom</field>
+        </record>
+        <record id="bom_line_off3_panel" model="mrp.bom.line">
+            <field name="bom_id" ref="bom_off_grid_3kw"/>
+            <field name="product_id" ref="product_solar_panel_540w"/>
+            <field name="product_qty">6.0</field>
+        </record>
+        <record id="bom_line_off3_inv" model="mrp.bom.line">
+            <field name="bom_id" ref="bom_off_grid_3kw"/>
+            <field name="product_id" ref="product_solar_inverter_3kw"/>
+            <field name="product_qty">1.0</field>
+        </record>
+        <record id="bom_line_off3_battery" model="mrp.bom.line">
+            <field name="bom_id" ref="bom_off_grid_3kw"/>
+            <field name="product_id" ref="product_solar_battery_150ah"/>
+            <field name="product_qty">2.0</field>
+        </record>
+        <record id="bom_line_off3_ctrl" model="mrp.bom.line">
+            <field name="bom_id" ref="bom_off_grid_3kw"/>
+            <field name="product_id" ref="product_solar_charge_controller_mppt"/>
+            <field name="product_qty">1.0</field>
+        </record>
+        <record id="bom_line_off3_struct" model="mrp.bom.line">
+            <field name="bom_id" ref="bom_off_grid_3kw"/>
+            <field name="product_id" ref="product_solar_mounting_structure"/>
+            <field name="product_qty">3.0</field>
+        </record>
+        <record id="bom_line_off3_box" model="mrp.bom.line">
+            <field name="bom_id" ref="bom_off_grid_3kw"/>
+            <field name="product_id" ref="product_solar_wiring_safety_box"/>
+            <field name="product_qty">1.0</field>
+        </record>
+        <record id="bom_line_off3_cable" model="mrp.bom.line">
+            <field name="bom_id" ref="bom_off_grid_3kw"/>
+            <field name="product_id" ref="product_solar_dc_cable"/>
+            <field name="product_qty">30.0</field>
+        </record>
+
+        <record id="solar_package_off_grid_3kw" model="solar.package">
+            <field name="name">3 kW Off-Grid System (with Battery)</field>
+            <field name="system_type">off_grid</field>
+            <field name="capacity_kw">3.0</field>
+            <field name="product_tmpl_id" ref="pkg_product_off_grid_3kw"/>
+            <field name="bom_id" ref="bom_off_grid_3kw"/>
+        </record>
+
+        <!-- ============================================================== -->
+        <!-- 5 kW Off-Grid Solar Package (Kit — with High-Capacity Battery)  -->
+        <!-- ============================================================== -->
+        <record id="pkg_product_off_grid_5kw" model="product.product">
+            <field name="name">SunPower 5 kW Off-Grid Solar Package (with Battery Bank)</field>
+            <field name="categ_id" ref="categ_solar_packages"/>
+            <field name="list_price">395000.00</field>
+            <field name="type">consu</field>
+            <field name="is_storable" eval="True"/>
+            <field name="is_solar_component" eval="True"/>
+            <field name="solar_component_type">panel</field>
+            <field name="description_sale">High-Capacity 5 kW Off-Grid Rooftop Solar Package with 4x 150Ah Battery Energy Storage.</field>
+        </record>
+
+        <record id="bom_off_grid_5kw" model="mrp.bom">
+            <field name="product_tmpl_id" ref="pkg_product_off_grid_5kw"/>
+            <field name="product_qty">1.0</field>
+            <field name="type">phantom</field>
+        </record>
+        <record id="bom_line_off5_panel" model="mrp.bom.line">
+            <field name="bom_id" ref="bom_off_grid_5kw"/>
+            <field name="product_id" ref="product_solar_panel_540w"/>
+            <field name="product_qty">10.0</field>
+        </record>
+        <record id="bom_line_off5_inv" model="mrp.bom.line">
+            <field name="bom_id" ref="bom_off_grid_5kw"/>
+            <field name="product_id" ref="product_solar_inverter_5kw"/>
+            <field name="product_qty">1.0</field>
+        </record>
+        <record id="bom_line_off5_battery" model="mrp.bom.line">
+            <field name="bom_id" ref="bom_off_grid_5kw"/>
+            <field name="product_id" ref="product_solar_battery_150ah"/>
+            <field name="product_qty">4.0</field>
+        </record>
+        <record id="bom_line_off5_ctrl" model="mrp.bom.line">
+            <field name="bom_id" ref="bom_off_grid_5kw"/>
+            <field name="product_id" ref="product_solar_charge_controller_mppt"/>
+            <field name="product_qty">1.0</field>
+        </record>
+        <record id="bom_line_off5_struct" model="mrp.bom.line">
+            <field name="bom_id" ref="bom_off_grid_5kw"/>
+            <field name="product_id" ref="product_solar_mounting_structure"/>
+            <field name="product_qty">5.0</field>
+        </record>
+        <record id="bom_line_off5_box" model="mrp.bom.line">
+            <field name="bom_id" ref="bom_off_grid_5kw"/>
+            <field name="product_id" ref="product_solar_wiring_safety_box"/>
+            <field name="product_qty">1.0</field>
+        </record>
+        <record id="bom_line_off5_cable" model="mrp.bom.line">
+            <field name="bom_id" ref="bom_off_grid_5kw"/>
+            <field name="product_id" ref="product_solar_dc_cable"/>
+            <field name="product_qty">50.0</field>
+        </record>
+
+        <record id="solar_package_off_grid_5kw" model="solar.package">
+            <field name="name">5 kW Off-Grid System (with Battery)</field>
+            <field name="system_type">off_grid</field>
+            <field name="capacity_kw">5.0</field>
+            <field name="product_tmpl_id" ref="pkg_product_off_grid_5kw"/>
+            <field name="bom_id" ref="bom_off_grid_5kw"/>
+        </record>
+    </data>
+</odoo>
+

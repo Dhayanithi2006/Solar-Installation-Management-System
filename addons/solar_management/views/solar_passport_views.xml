@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- ================================================================== -->
+    <!-- Digital Solar Passport (DSP) Views                                 -->
+    <!-- ================================================================== -->
+
+    <!-- Form View -->
+    <record id="view_solar_passport_form" model="ir.ui.view">
+        <field name="name">solar.passport.form</field>
+        <field name="model">solar.passport</field>
+        <field name="arch" type="xml">
+            <form string="Digital Solar Passport">
+                <header>
+                    <button name="action_decommission" string="Decommission System" type="object"
+                            invisible="state == 'decommissioned'"
+                            confirm="Are you sure you want to decommission this solar rooftop system passport?"
+                            groups="solar_management.group_solar_manager"/>
+                    <button name="action_reactivate" string="Re-Activate Passport" type="object"
+                            invisible="state != 'decommissioned'"
+                            groups="solar_management.group_solar_manager"/>
+                    <field name="state" widget="statusbar" statusbar_visible="active,decommissioned"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <span class="o_form_label">Digital Solar Passport ID</span>
+                        <h1>
+                            <field name="name" readonly="1"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group name="customer_info" string="Customer &amp; Project">
+                            <field name="partner_id" widget="res_partner_many2one"/>
+                            <field name="installation_id"/>
+                            <field name="sale_order_id"/>
+                            <field name="survey_id"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                        </group>
+                        <group name="technical_specs" string="System Specifications">
+                            <field name="installed_capacity_kw"/>
+                            <field name="system_type"/>
+                            <field name="commissioning_date"/>
+                            <field name="lead_technician_id"/>
+                            <field name="verification_url" widget="url" readonly="1"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page name="components" string="Installed Component Registry">
+                            <field name="component_ids">
+                                <list editable="bottom" decoration-success="warranty_status == 'active'" decoration-danger="warranty_status in ('expired', 'void')">
+                                    <field name="product_id"/>
+                                    <field name="component_type"/>
+                                    <field name="lot_id" domain="[('product_id', '=', product_id)]"/>
+                                    <field name="serial_number"/>
+                                    <field name="warranty_id"/>
+                                    <field name="warranty_status" widget="badge" decoration-success="warranty_status == 'active'" decoration-danger="warranty_status in ('expired', 'void')"/>
+                                    <field name="warranty_end"/>
+                                    <field name="days_remaining"/>
+                                    <field name="installation_date"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page name="commissioning" string="Commissioning Measurements &amp; Evidence">
+                            <group>
+                                <group string="Electrical Power Measurements">
+                                    <field name="test_dc_voltage"/>
+                                    <field name="test_ac_voltage"/>
+                                    <field name="test_generation_kw"/>
+                                </group>
+                                <group string="GPS &amp; Customer Acceptance">
+                                    <field name="gps_latitude"/>
+                                    <field name="gps_longitude"/>
+                                    <field name="customer_signed_by"/>
+                                    <field name="customer_signed_date"/>
+                                </group>
+                            </group>
+                        </page>
+                        <page name="service_history" string="Service &amp; Maintenance Claims">
+                            <field name="service_ticket_ids" readonly="1">
+                                <list>
+                                    <field name="name"/>
+                                    <field name="fault_category"/>
+                                    <field name="lot_id"/>
+                                    <field name="warranty_coverage_status" widget="badge"/>
+                                    <field name="state" widget="badge"/>
+                                    <field name="create_date"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page name="warranties" string="Warranty Certificates">
+                            <field name="warranty_record_ids" readonly="1">
+                                <list>
+                                    <field name="name"/>
+                                    <field name="product_id"/>
+                                    <field name="lot_id"/>
+                                    <field name="warranty_start"/>
+                                    <field name="warranty_end"/>
+                                    <field name="days_remaining"/>
+                                    <field name="state" widget="badge"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page name="subsidies" string="Government Subsidies">
+                            <field name="subsidy_case_ids" readonly="1">
+                                <list>
+                                    <field name="name"/>
+                                    <field name="scheme_name"/>
+                                    <field name="calculated_cfa_subsidy"/>
+                                    <field name="state" widget="badge"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page name="notes" string="Lifecycle Remarks">
+                            <field name="notes" placeholder="Add maintenance observations, grid synchronization permits or technical notes..."/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <!-- List View -->
+    <record id="view_solar_passport_tree" model="ir.ui.view">
+        <field name="name">solar.passport.list</field>
+        <field name="model">solar.passport</field>
+        <field name="arch" type="xml">
+            <list string="Digital Solar Passports" decoration-success="state == 'active'" decoration-muted="state == 'decommissioned'">
+                <field name="name"/>
+                <field name="partner_id"/>
+                <field name="installation_id"/>
+                <field name="installed_capacity_kw"/>
+                <field name="system_type"/>
+                <field name="commissioning_date"/>
+                <field name="component_count"/>
+                <field name="active_warranty_count"/>
+                <field name="state" widget="badge" decoration-success="state == 'active'" decoration-danger="state == 'decommissioned'"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Search View -->
+    <record id="view_solar_passport_search" model="ir.ui.view">
+        <field name="name">solar.passport.search</field>
+        <field name="model">solar.passport</field>
+        <field name="arch" type="xml">
+            <search string="Search Digital Solar Passports">
+                <field name="name" string="Passport ID"/>
+                <field name="partner_id" string="Customer"/>
+                <field name="installation_id" string="Installation Reference"/>
+                <field name="component_ids" string="Installed Serial Number" filter_domain="[('component_ids.lot_id.name', 'ilike', self)]"/>
+                <filter name="filter_active" string="Active Systems" domain="[('state', '=', 'active')]"/>
+                <filter name="filter_decommissioned" string="Decommissioned" domain="[('state', '=', 'decommissioned')]"/>
+                <separator/>
+                <filter name="filter_on_grid" string="On-Grid" domain="[('system_type', '=', 'on_grid')]"/>
+                <filter name="filter_off_grid" string="Off-Grid" domain="[('system_type', '=', 'off_grid')]"/>
+                <group expand="0" string="Group By">
+                    <filter name="group_partner" string="Customer" domain="[]" context="{'group_by': 'partner_id'}"/>
+                    <filter name="group_system_type" string="Architecture" domain="[]" context="{'group_by': 'system_type'}"/>
+                    <filter name="group_state" string="Status" domain="[]" context="{'group_by': 'state'}"/>
+                    <filter name="group_commissioning" string="Commissioning Month" domain="[]" context="{'group_by': 'commissioning_date:month'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Window Action -->
+    <record id="action_solar_passport" model="ir.actions.act_window">
+        <field name="name">Digital Solar Passports</field>
+        <field name="res_model">solar.passport</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="view_solar_passport_search"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No Digital Solar Passports issued yet!
+            </p>
+            <p>
+                Digital Solar Passports are automatically generated when a rooftop installation worksheet is commissioned and completed.
+            </p>
+        </field>
+    </record>
+</odoo>
+

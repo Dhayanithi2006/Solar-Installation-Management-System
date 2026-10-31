@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- Site Survey Reference Sequence -->
+        <record id="seq_solar_site_survey" model="ir.sequence">
+            <field name="name">Solar Site Survey Sequence</field>
+            <field name="code">solar.site.survey</field>
+            <field name="prefix">SURVEY/%(year)s/</field>
+            <field name="padding">4</field>
+            <field name="company_id" eval="False"/>
+        </record>
+
+        <!-- Solar Installation Job Sequence -->
+        <record id="seq_solar_installation" model="ir.sequence">
+            <field name="name">Solar Installation Sequence</field>
+            <field name="code">solar.installation</field>
+            <field name="prefix">INST/%(year)s/</field>
+            <field name="padding">4</field>
+            <field name="company_id" eval="False"/>
+        </record>
+
+        <!-- Solar Warranty Record Sequence -->
+        <record id="seq_solar_warranty_record" model="ir.sequence">
+            <field name="name">Solar Warranty Record Sequence</field>
+            <field name="code">solar.warranty.record</field>
+            <field name="prefix">WAR/%(year)s/</field>
+            <field name="padding">5</field>
+            <field name="company_id" eval="False"/>
+        </record>
+
+        <!-- Solar Subsidy Case Sequence -->
+        <record id="seq_solar_subsidy_case" model="ir.sequence">
+            <field name="name">Solar Subsidy Case Sequence</field>
+            <field name="code">solar.subsidy.case</field>
+            <field name="prefix">SUB/%(year)s/</field>
+            <field name="padding">4</field>
+            <field name="company_id" eval="False"/>
+        </record>
+
+        <!-- Solar Service Ticket Sequence -->
+        <record id="seq_solar_service_ticket" model="ir.sequence">
+            <field name="name">Solar Service Ticket Sequence</field>
+            <field name="code">solar.service.ticket</field>
+            <field name="prefix">SRV/%(year)s/</field>
+            <field name="padding">4</field>
+            <field name="company_id" eval="False"/>
+        </record>
+
+        <!-- Digital Solar Passport (DSP) Sequence -->
+        <record id="seq_solar_passport" model="ir.sequence">
+            <field name="name">Digital Solar Passport Sequence</field>
+            <field name="code">solar.passport</field>
+            <field name="prefix">DSP/%(year)s/</field>
+            <field name="padding">5</field>
+            <field name="company_id" eval="False"/>
+        </record>
+    </data>
+</odoo>
+

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- ================================================================== -->
+        <!-- Dedicated Rooftop Solar Sales Team                                 -->
+        <!-- ================================================================== -->
+        <record id="crm_team_solar_sales" model="crm.team">
+            <field name="name">Rooftop Solar Sales Team</field>
+            <field name="sequence">1</field>
+            <field name="use_opportunities">True</field>
+        </record>
+
+        <!-- ================================================================== -->
+        <!-- Scenario 1: Reference Customer Lead (Arun Kumar - 3 kW On-Grid)    -->
+        <!-- ================================================================== -->
+        <record id="partner_arun_kumar" model="res.partner">
+            <field name="name">Arun Kumar</field>
+            <field name="phone">+91 98765 43210</field>
+            <field name="email">arun.kumar@example.com</field>
+            <field name="street">Plot 42, Sunrise Enclave, Anna Nagar</field>
+            <field name="city">Chennai</field>
+            <field name="customer_rank">1</field>
+        </record>
+
+        <record id="crm_lead_arun_kumar_solar" model="crm.lead">
+            <field name="name">Arun Kumar — 3 kW On-Grid Solar</field>
+            <field name="partner_id" ref="partner_arun_kumar"/>
+            <field name="contact_name">Arun Kumar</field>
+            <field name="phone">+91 98765 43210</field>
+            <field name="email_from">arun.kumar@example.com</field>
+            <field name="street">Plot 42, Sunrise Enclave, Anna Nagar</field>
+            <field name="city">Chennai</field>
+            <field name="requested_capacity_kw">3.0</field>
+            <field name="requested_system_type">on_grid</field>
+            <field name="monthly_electricity_bill">4500.0</field>
+            <field name="shadow_free_roof_area">350.0</field>
+            <field name="grid_suitability">suitable</field>
+            <field name="subsidy_interest">True</field>
+            <field name="roof_space_notes">Flat RCC concrete rooftop with unobstructed south-facing exposure. Minor tree shadow on northwest corner after 4:30 PM.</field>
+            <field name="team_id" ref="crm_team_solar_sales"/>
+            <field name="type">opportunity</field>
+        </record>
+    </data>
+</odoo>
+

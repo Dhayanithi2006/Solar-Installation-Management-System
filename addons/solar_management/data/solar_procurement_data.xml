@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- ================================================================== -->
+        <!-- Product Supplier Info (Vendor Catalogues & Pricing)                -->
+        <!-- ================================================================== -->
+        <!-- 1. PV Panels: EverGreen Solar Panels India -->
+        <record id="supplierinfo_panel_540w" model="product.supplierinfo">
+            <field name="partner_id" ref="supplier_evergreen_panels"/>
+            <field name="product_id" ref="product_solar_panel_540w"/>
+            <field name="price">10500.00</field>
+            <field name="min_qty">10.0</field>
+            <field name="delay">3</field>
+        </record>
+
+        <!-- 2. Inverters: Apex Inverter Technologies -->
+        <record id="supplierinfo_inverter_1kw" model="product.supplierinfo">
+            <field name="partner_id" ref="supplier_apex_inverters"/>
+            <field name="product_id" ref="product_solar_inverter_1kw"/>
+            <field name="price">16000.00</field>
+            <field name="min_qty">1.0</field>
+            <field name="delay">2</field>
+        </record>
+
+        <record id="supplierinfo_inverter_3kw" model="product.supplierinfo">
+            <field name="partner_id" ref="supplier_apex_inverters"/>
+            <field name="product_id" ref="product_solar_inverter_3kw"/>
+            <field name="price">25000.00</field>
+            <field name="min_qty">1.0</field>
+            <field name="delay">2</field>
+        </record>
+
+        <record id="supplierinfo_inverter_5kw" model="product.supplierinfo">
+            <field name="partner_id" ref="supplier_apex_inverters"/>
+            <field name="product_id" ref="product_solar_inverter_5kw"/>
+            <field name="price">34000.00</field>
+            <field name="min_qty">1.0</field>
+            <field name="delay">2</field>
+        </record>
+
+        <!-- 3. Batteries: SunVolt Energy Storage -->
+        <record id="supplierinfo_battery_150ah" model="product.supplierinfo">
+            <field name="partner_id" ref="supplier_sunvolt_batteries"/>
+            <field name="product_id" ref="product_solar_battery_150ah"/>
+            <field name="price">19500.00</field>
+            <field name="min_qty">2.0</field>
+            <field name="delay">4</field>
+        </record>
+
+        <!-- 4. Charge Controllers: Apex Inverter Technologies -->
+        <record id="supplierinfo_controller_mppt" model="product.supplierinfo">
+            <field name="partner_id" ref="supplier_apex_inverters"/>
+            <field name="product_id" ref="product_solar_charge_controller_mppt"/>
+            <field name="price">6800.00</field>
+            <field name="min_qty">1.0</field>
+            <field name="delay">2</field>
+        </record>
+
+        <!-- ================================================================== -->
+        <!-- Sample Inward Procurement Order for Stock Replenishment            -->
+        <!-- ================================================================== -->
+        <record id="purchase_order_stock_inverters" model="purchase.order">
+            <field name="partner_id" ref="supplier_apex_inverters"/>
+            <field name="procurement_type">stock</field>
+            <field name="component_category">inverter</field>
+            <field name="total_landed_cost_estimated">2500.0</field>
+            <field name="order_line" eval="[
+                (0, 0, {
+                    'product_id': ref('product_solar_inverter_3kw'),
+                    'product_qty': 10.0,
+                    'price_unit': 25000.0,
+                    'name': 'Solar Inverter 3 kW Single Phase On-Grid (Bulk Inventory Replenishment)',
+                })
+            ]"/>
+        </record>
+    </data>
+</odoo>

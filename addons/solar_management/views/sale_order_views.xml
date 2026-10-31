@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- ================================================================== -->
+    <!-- Sale Order Form View Extension for Solar Installation              -->
+    <!-- ================================================================== -->
+    <record id="view_order_form_inherit_solar" model="ir.ui.view">
+        <field name="name">sale.order.form.solar</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <!-- Smart Buttons for Downstream Operations -->
+            <xpath expr="//div[@name='button_box']" position="inside">
+                <button name="action_view_installations"
+                        type="object"
+                        class="oe_stat_button"
+                        icon="fa-wrench"
+                        invisible="not is_solar_order">
+                    <field name="installation_count" widget="statinfo" string="Installations"/>
+                </button>
+                <button name="action_view_subsidies"
+                        type="object"
+                        class="oe_stat_button"
+                        icon="fa-file-text-o"
+                        invisible="not is_solar_order">
+                    <field name="subsidy_count" widget="statinfo" string="Subsidy"/>
+                </button>
+            </xpath>
+
+            <!-- Action Buttons for Package & Advance Payment -->
+            <xpath expr="//header" position="inside">
+                <button name="action_record_advance_payment"
+                        type="object"
+                        string="Record Advance Payment"
+                        class="btn-secondary"
+                        invisible="advance_payment_status in ('paid', 'not_required') or state not in ('draft', 'sent')"/>
+            </xpath>
+
+            <!-- Solar Installation Management Tab -->
+            <xpath expr="//notebook" position="inside">
+                <page string="Solar Installation &amp; Advance" name="solar_installation">
+                    <group>
+                        <group string="Solar Engineering &amp; Approved Survey">
+                            <field name="survey_id" options="{'no_create': True}"/>
+                            <field name="package_id" options="{'no_create': True}"/>
+                            <field name="is_solar_order" invisible="1"/>
+                            <field name="work_ready"
+                                   widget="boolean_toggle"
+                                   help="Indicates whether survey approval and advance payment requirements are satisfied."/>
+                        </group>
+                        <group string="Advance Payment Terms (Scenario 2)">
+                            <field name="advance_payment_policy"/>
+                            <field name="advance_percentage" invisible="advance_payment_policy != 'percentage'"/>
+                            <field name="advance_fixed_amount" invisible="advance_payment_policy != 'fixed'"/>
+                            <field name="advance_amount_required"/>
+                            <field name="advance_amount_paid"/>
+                            <field name="advance_payment_status"
+                                   widget="badge"
+                                   decoration-info="advance_payment_status == 'pending'"
+                                   decoration-warning="advance_payment_status == 'partially_paid'"
+                                   decoration-success="advance_payment_status == 'paid'"
+                                   decoration-muted="advance_payment_status == 'not_required'"/>
+                            <field name="advance_payment_notes" placeholder="e.g. Bank Transfer Ref / Cheque #"/>
+                        </group>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- ================================================================== -->
+    <!-- Sale Order Search View Extension for Solar Quotations              -->
+    <!-- ================================================================== -->
+    <record id="view_sales_order_filter_inherit_solar" model="ir.ui.view">
+        <field name="name">sale.order.search.solar</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_sales_order_filter"/>
+        <field name="arch" type="xml">
+            <xpath expr="//filter[@name='my_sale_orders_filter']" position="after">
+                <separator/>
+                <filter string="Solar Orders"
+                        name="filter_solar_orders"
+                        domain="[('is_solar_order', '=', True)]"/>
+                <filter string="Advance Pending"
+                        name="filter_advance_pending"
+                        domain="[('advance_payment_status', '=', 'pending')]"/>
+                <filter string="Advance Paid / Ready"
+                        name="filter_advance_paid"
+                        domain="[('advance_payment_status', '=', 'paid')]"/>
+                <filter string="Work Ready"
+                        name="filter_work_ready"
+                        domain="[('work_ready', '=', True)]"/>
+            </xpath>
+            <xpath expr="//group" position="inside">
+                <filter string="Solar Package"
+                        name="group_by_package"
+                        context="{'group_by': 'package_id'}"/>
+                <filter string="Advance Status"
+                        name="group_by_advance_status"
+                        context="{'group_by': 'advance_payment_status'}"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>
+
